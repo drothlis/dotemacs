@@ -105,8 +105,12 @@
 ;;; Typography & colours
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(set-face-attribute 'default nil :family "Menlo" :height 120)
-(set-face-attribute 'variable-pitch nil :family "Verdana" :height 120)
+(cond
+ ((eq system-type 'darwin)
+  (set-face-attribute 'default nil :family "Menlo" :height 120)
+  (set-face-attribute 'variable-pitch nil :family "Verdana" :height 120))
+ (t
+  (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 100)))
 
 (set-face-attribute 'font-lock-comment-face nil :foreground "#3f7f5f")
 (set-face-attribute 'font-lock-string-face nil :foreground "#3f003f")
@@ -250,7 +254,8 @@
   ;; Server for `emacsclient' from the shell.
   (server-start))
 
-(when (not (display-graphic-p))
+(when (or (not (display-graphic-p))
+          (not (eq system-type 'darwin)))
   (menu-bar-mode -1))
 
 
