@@ -61,7 +61,8 @@
 (when (eq system-type 'darwin)  ; OS X
   ;;(global-set-key (kbd "s-q") 'my-ask-before-quitting)
   (setq mac-command-modifier 'meta)
-  (global-set-key (kbd "M-`") 'other-frame))
+  (global-set-key (kbd "M-`") 'other-frame)
+  (define-key term-raw-map (kbd "M-`") nil))
 
 
 ;;; Misc. functions
