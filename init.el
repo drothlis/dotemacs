@@ -253,6 +253,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (display-graphic-p)
+  (setq frame-title-format '(buffer-file-name "%f" "%b"))
   ;; Server for `emacsclient' from the shell.
   (server-start))
 
