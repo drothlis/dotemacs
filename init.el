@@ -283,8 +283,10 @@
 (when (eq system-type 'darwin)
   (setenv "PATH" (concat
                   (getenv "HOME") "/bin:"
+                  exec-directory ":"
                   "/opt/local/bin:"
                   (getenv "PATH")))
+  (setq exec-path (split-string (getenv "PATH") ":"))
   (setq ispell-program-name "/opt/local/bin/aspell")
   (setenv "ASPELL_CONF" nil)
   ;; OS X 'ls' doesn't support '--dired' flag.
