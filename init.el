@@ -193,7 +193,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (show-paren-mode 1)
-(eldoc-mode 1)
+(add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
 
 (setq-default indent-tabs-mode nil)
 (add-hook 'prog-mode-hook 'whitespace-mode)
