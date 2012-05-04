@@ -13,7 +13,8 @@
   (package-refresh-contents))
 
 (defvar my-packages
-  '(goto-last-change
+  '(fill-column-indicator
+    goto-last-change
     haml-mode
     ido-ubiquitous
     magit
@@ -197,6 +198,8 @@
 
 (setq-default indent-tabs-mode nil)
 (add-hook 'prog-mode-hook 'whitespace-mode)
+
+(add-hook 'prog-mode-hook 'turn-on-fci-mode)
 
 ;; Create our own style for c-mode and friends
 (c-add-style
