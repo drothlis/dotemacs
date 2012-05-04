@@ -226,8 +226,7 @@
                                     ,(make-char 'greek-iso8859-7 107))
                     nil))))))
 (add-hook 'emacs-lisp-mode-hook 'my-pretty-lambdas)
-(require 'paredit)
-(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 
 ;; A monkeypatch to cause annotate to ignore whitespace
 (defun vc-git-annotate-command (file buf &optional rev)
