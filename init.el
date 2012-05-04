@@ -111,7 +111,7 @@
 (cond
  ((eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Menlo" :height 120)
-  (set-face-attribute 'variable-pitch nil :family "Verdana" :height 120))
+  (set-face-attribute 'variable-pitch nil :family "Verdana" :height 140))
  (t
   (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 100)))
 
