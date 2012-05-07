@@ -226,6 +226,12 @@
 (add-hook 'prog-mode-hook 'pretty-symbols-mode)
 
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+;; Don't enable paredit by default in other languages, but when I do want it:
+(defun my-space-for-paredit-delimiter-p (endp delimiter)
+  (not (member major-mode '(c-mode c++-mode python-mode js-mode))))
+(eval-after-load 'paredit
+  '(add-to-list 'paredit-space-for-delimiter-predicates
+                'my-space-for-paredit-delimiter-p))
 
 ;; A monkeypatch to cause annotate to ignore whitespace
 (defun vc-git-annotate-command (file buf &optional rev)
