@@ -1,5 +1,6 @@
-(setq custom-file "~/.emacs.d/emacs-custom.el")
-(load-file custom-file)
+;; Turn off scrollbars early in startup to avoid window width weirdness.
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
 
 
 ;;; Package manager
@@ -299,8 +300,6 @@
 ;;; Misc
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
 (tooltip-mode -1)
 (setq inhibit-startup-screen t)
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -310,6 +309,9 @@
 (setq-default truncate-lines t)
 (setq sentence-end-double-space nil)
 (setq-default fill-column 79)   ; use C-x f to set buffer-local value.
+
+(setq custom-file "~/.emacs.d/emacs-custom.el")
+(load-file custom-file)
 
 (eval-after-load 'bookmark
   (setq bookmark-default-file "~/.emacs.d/bookmarks"))
