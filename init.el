@@ -7,8 +7,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'package)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(nconc package-archives
+       '(("melpa" . "http://melpa.milkbox.net/packages/")
+         ("marmalade" . "http://marmalade-repo.org/packages/")))
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -19,7 +20,8 @@
     haml-mode
     ido-ubiquitous
     magit
-    paredit))
+    paredit
+    pretty-symbols-mode))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -220,13 +222,9 @@
 
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 
-(defun my-pretty-lambdas ()
-  (font-lock-add-keywords
-   nil `(("(?\\(lambda\\>\\)"
-          (0 (progn (compose-region (match-beginning 1) (match-end 1)
-                                    ,(make-char 'greek-iso8859-7 107))
-                    nil))))))
-(add-hook 'emacs-lisp-mode-hook 'my-pretty-lambdas)
+(setq pretty-symbol-categories '(lambda relational))
+(add-hook 'prog-mode-hook 'pretty-symbols-mode)
+
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 
 ;; A monkeypatch to cause annotate to ignore whitespace
