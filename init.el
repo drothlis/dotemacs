@@ -315,6 +315,7 @@
 (setq-default truncate-lines t)
 (setq sentence-end-double-space nil)
 (setq-default fill-column 79)   ; use C-x f to set buffer-local value.
+(setq dired-auto-revert-buffer t)
 
 (setq custom-file "~/.emacs.d/emacs-custom.el")
 (load-file custom-file)
