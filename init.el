@@ -34,8 +34,10 @@
 (global-set-key (kbd "C-w") 'my-kill-region-or-backward-kill-word)
 (global-set-key (kbd "C-x k") 'my-kill-buffer)
 
+(global-set-key (kbd "<f5>") 'switch-to-prev-buffer)
+(global-set-key (kbd "<f6>") 'switch-to-next-buffer)
+
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c b") 'my-prev-buffer)
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key (kbd "C-c l") 'toggle-truncate-lines)
 (global-set-key (kbd "C-c r") 'revert-buffer)
