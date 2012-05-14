@@ -2,6 +2,8 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
+(require 'cl)
+
 
 ;;; Package manager
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -322,3 +324,11 @@
 
 (eval-after-load 'bookmark
   (setq bookmark-default-file "~/.emacs.d/bookmarks"))
+
+(eval-after-load 'term
+  '(let ((usb-serial-ports
+          (remove-if-not 'file-exists-p
+                         '("/dev/ttyUSB0" "/dev/ttyUSB1" "/dev/ttyUSB2"))))
+     (when usb-serial-ports
+       (setq serial-name-history usb-serial-ports)
+       (setq serial-speed-history (cons "115200" serial-speed-history)))))
