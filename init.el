@@ -202,7 +202,6 @@
 (add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
 
 (setq-default indent-tabs-mode nil)
-(add-hook 'prog-mode-hook 'whitespace-mode)
 
 (add-hook 'prog-mode-hook 'turn-on-fci-mode)
 
