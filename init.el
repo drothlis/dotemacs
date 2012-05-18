@@ -248,6 +248,13 @@
   (let ((name (file-relative-name file)))
     (vc-git-command buf 'async nil "blame" "--date=iso" "-C" "-C" "-w" rev "--" name)))
 
+(eval-after-load 'ruby-mode
+  '(progn
+     (define-key ruby-mode-map "{" nil)  ;
+     (define-key ruby-mode-map "}" nil)  ; disable electric indentation.
+     (setq ruby-deep-indent-paren nil)
+     (setq ruby-insert-encoding-magic-comment nil))) ; ANNOYING!
+
 
 ;;; Shell mode and shell commands (M-x grep etc.)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
