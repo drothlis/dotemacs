@@ -182,7 +182,7 @@
      (set-face-attribute 'whitespace-trailing nil
                          :background "#fff0f0" :foreground "#cccccc")))
 
-(global-hl-line-mode 1)
+(global-hl-line-mode)
 
 
 ;;; Navigation
@@ -193,7 +193,7 @@
 
 (setq ido-save-directory-list-file "~/.emacs.d/.ido.last")
 (ido-mode 1)
-(ido-ubiquitous-mode 1)
+(ido-ubiquitous-mode)
 (setq ido-enable-flex-matching t)
 (setq ido-default-buffer-method 'selected-window)
 
@@ -204,12 +204,12 @@
 ;;; Programming
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(show-paren-mode 1)
-(add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
+(show-paren-mode)
+(add-hook 'prog-mode-hook 'eldoc-mode)
 
 (setq-default indent-tabs-mode nil)
 
-(add-hook 'prog-mode-hook 'turn-on-fci-mode)
+(add-hook 'prog-mode-hook 'fci-mode)
 
 (add-hook 'prog-mode-hook 'outline-minor-mode)
 (eval-after-load 'outline '(require 'outline-magic)) ; provides `outline-cycle'
@@ -320,7 +320,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'qrr 'query-replace-regexp)
 (setq make-backup-files nil)
-(column-number-mode 1)
+(column-number-mode)
 (setq-default truncate-lines t)
 (setq sentence-end-double-space nil)
 (setq-default fill-column 79)   ; use C-x f to set buffer-local value.
