@@ -22,6 +22,7 @@
     haml-mode
     ido-ubiquitous
     magit
+    outline-magic
     paredit
     pretty-symbols-mode))
 (dolist (p my-packages)
@@ -57,6 +58,9 @@
 
 ;; TODO: goto-last-change-with-automarks (my "C-c u") isn't autoloaded.
 (require 'goto-last-change)
+
+(eval-after-load 'outline
+  '(define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle))
 
 (add-hook 'diff-mode-hook
   (lambda () (local-unset-key (kbd "M-q")))) ; don't override fill-paragraph.
@@ -206,6 +210,9 @@
 (setq-default indent-tabs-mode nil)
 
 (add-hook 'prog-mode-hook 'turn-on-fci-mode)
+
+(add-hook 'prog-mode-hook 'outline-minor-mode)
+(eval-after-load 'outline '(require 'outline-magic)) ; provides `outline-cycle'
 
 ;; Create our own style for c-mode and friends
 (c-add-style
