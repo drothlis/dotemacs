@@ -205,10 +205,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (show-paren-mode)
+(which-function-mode)
 (add-hook 'prog-mode-hook 'eldoc-mode)
-
 (setq-default indent-tabs-mode nil)
-
 (add-hook 'prog-mode-hook 'fci-mode)
 
 (add-hook 'prog-mode-hook 'outline-minor-mode)
