@@ -48,6 +48,7 @@
 (global-set-key (kbd "C-c u") 'goto-last-change-with-auto-marks)
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "C-c .") 'imenu)
+(global-set-key (kbd "C-c \\") 'align-regexp)
 (global-set-key (kbd "C-c SPC") 'my-frame-move)
 
 ;; Use regex searches by default
