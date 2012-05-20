@@ -297,9 +297,7 @@
 (eval-after-load 'info
   '(progn
      (push "/opt/local/share/info" Info-default-directory-list)
-     (push "~/.emacs.d/info" Info-default-directory-list)
-     (setq Info-additional-directory-list
-           '("~/work/info" "/opt/local/share/info"))))
+     (push "~/work/info" Info-default-directory-list)))
 
 (require 'pydoc-info)
 
