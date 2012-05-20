@@ -58,6 +58,8 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
+(windmove-default-keybindings) ; S-<up> for windmove-up, etc.
+
 ;; TODO: goto-last-change-with-automarks (my "C-c u") isn't autoloaded.
 (require 'goto-last-change)
 
