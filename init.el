@@ -36,6 +36,7 @@
 (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 (global-set-key (kbd "C-w") 'my-kill-region-or-backward-kill-word)
 (global-set-key (kbd "C-x k") 'my-kill-buffer)
+(global-set-key (kbd "M-/") 'hippie-expand)
 
 (global-set-key (kbd "<f5>") 'switch-to-prev-buffer)
 (global-set-key (kbd "<f6>") 'switch-to-next-buffer)
@@ -213,6 +214,17 @@
 
 (add-hook 'prog-mode-hook 'outline-minor-mode)
 (eval-after-load 'outline '(require 'outline-magic)) ; provides `outline-cycle'
+
+(setq hippie-expand-try-functions-list
+  '(try-complete-file-name-partially
+    try-complete-file-name
+    try-expand-all-abbrevs
+    try-expand-dabbrev
+    try-expand-dabbrev-visible
+    try-expand-dabbrev-all-buffers
+    try-expand-dabbrev-from-kill
+    try-complete-lisp-symbol-partially
+    try-complete-lisp-symbol))
 
 ;; Create our own style for c-mode and friends
 (c-add-style
