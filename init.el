@@ -24,7 +24,8 @@
     magit
     outline-magic
     paredit
-    pretty-symbols-mode))
+    pretty-symbols-mode
+    smart-tab))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -62,6 +63,9 @@
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
 (windmove-default-keybindings) ; S-<up> for windmove-up, etc.
+
+(require 'smart-tab)
+(global-smart-tab-mode)
 
 ;; TODO: goto-last-change-with-automarks (my "C-c u") isn't autoloaded.
 (require 'goto-last-change)
@@ -242,6 +246,10 @@
     try-expand-dabbrev-from-kill
     try-complete-lisp-symbol-partially
     try-complete-lisp-symbol))
+(setq smart-tab-using-hippie-expand t)
+;; Try shell-mode's default completion-at-point for a while --
+;; I can always use M-/ for hippie-expand.
+(add-to-list 'smart-tab-disabled-major-modes 'shell-mode)
 
 ;; Create our own style for c-mode and friends
 (c-add-style
