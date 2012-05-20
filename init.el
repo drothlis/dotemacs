@@ -29,6 +29,9 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
+;; Not available as a package
+(add-to-list 'load-path (concat user-emacs-directory "non-elpa"))
+
 
 ;;; Keys
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -297,6 +300,8 @@
      (push "~/.emacs.d/info" Info-default-directory-list)
      (setq Info-additional-directory-list
            '("~/work/info" "/opt/local/share/info"))))
+
+(require 'pydoc-info)
 
 
 ;;; GUI
