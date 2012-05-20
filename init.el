@@ -285,6 +285,7 @@
   (let ((name (file-relative-name file)))
     (vc-git-command buf 'async nil "blame" "--date=iso" "-C" "-C" "-w" rev "--" name)))
 
+(add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
 (eval-after-load 'ruby-mode
   '(progn
      (define-key ruby-mode-map "{" nil)  ;
