@@ -25,7 +25,7 @@
     outline-magic
     paredit
     pretty-symbols-mode
-    smart-tab))
+    ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -63,9 +63,6 @@
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
 (windmove-default-keybindings) ; S-<up> for windmove-up, etc.
-
-(require 'smart-tab)
-(global-smart-tab-mode)
 
 ;; TODO: goto-last-change-with-automarks (my "C-c u") isn't autoloaded.
 (require 'goto-last-change)
@@ -236,6 +233,12 @@
 (add-hook 'prog-mode-hook 'outline-minor-mode)
 (eval-after-load 'outline '(require 'outline-magic)) ; provides `outline-cycle'
 
+;; TAB completes using completion-at-point, which uses language-appropriate
+;; completion (the Emacs interpreter's internal knowledge in elisp modes, tags
+;; tables in C and other modes, semantic-mode information when enabled).
+(setq tab-always-indent 'complete)
+;; M-/ completes using hippie-expand, which mostly uses dabbrev, i.e. just
+;; finds any matching text in open buffers.
 (setq hippie-expand-try-functions-list
   '(try-complete-file-name-partially
     try-complete-file-name
@@ -246,10 +249,6 @@
     try-expand-dabbrev-from-kill
     try-complete-lisp-symbol-partially
     try-complete-lisp-symbol))
-(setq smart-tab-using-hippie-expand t)
-;; Try shell-mode's default completion-at-point for a while --
-;; I can always use M-/ for hippie-expand.
-(add-to-list 'smart-tab-disabled-major-modes 'shell-mode)
 
 ;; Create our own style for c-mode and friends
 (c-add-style
