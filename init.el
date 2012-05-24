@@ -47,7 +47,7 @@
 
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c g") 'magit-status)
-(global-set-key (kbd "C-c l") 'toggle-truncate-lines)
+(global-set-key (kbd "C-c l") 'my-toggle-truncate-lines)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-c t") 'my-cycle-tab-width)
 (global-set-key (kbd "C-c u") 'goto-last-change-with-auto-marks)
@@ -85,7 +85,7 @@
   (eval-after-load 'term '(define-key term-raw-map (kbd "M-`") nil)))
 
 
-;;; Misc. functions
+;;; Misc. commands
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun my-kill-region-or-backward-kill-word (&optional arg region)
@@ -104,6 +104,16 @@
    ((= tab-width 2) (setq tab-width 4) (message "Set tab width to 4"))
    (t               (setq tab-width 8) (message "Set tab width to 8")))
   (redraw-display))
+
+(defun my-toggle-truncate-lines ()
+  "In text modes disable visual-line-mode; otherwise toggle truncate-lines.
+
+Note that I enable visual-line-mode (virtual line wrapping at
+word boundaries) in text-mode-hook."
+  (interactive)
+  (if visual-line-mode
+      (visual-line-mode -1)
+    (toggle-truncate-lines)))
 
 ;; Switch to last buffer without having to press return.
 (defun my-prev-buffer ()
