@@ -266,6 +266,21 @@ word boundaries) in text-mode-hook."
     try-complete-lisp-symbol-partially
     try-complete-lisp-symbol))
 
+;; I spend more time reading code than editing code, so default to view-mode.
+;; And disable distracting whitespace-highlighting when in view-mode.
+(add-hook 'prog-mode-hook 'my-auto-view-mode t)
+(defun my-auto-view-mode ()
+  (if (not (member major-mode '(lisp-interaction-mode)))
+      (view-mode)))
+(setq view-read-only t) ; enable view-mode with C-x C-q
+(defun my-toggle-read-only ()
+  (interactive)
+  (toggle-read-only)
+  (whitespace-mode (if view-mode -1 1)))
+(global-set-key (kbd "C-x C-q") 'my-toggle-read-only)
+(eval-after-load 'view
+  '(define-key view-mode-map "e" 'my-toggle-read-only))
+
 ;; Create our own style for c-mode and friends
 (c-add-style
  "my-c-style"                  ; define new style with this name
