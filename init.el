@@ -353,6 +353,9 @@ word boundaries) in text-mode-hook."
           (not (eq system-type 'darwin)))
   (menu-bar-mode -1))
 
+;; Stop "q" within a full-frame help or magit buffer from minimising the frame.
+(setq frame-auto-hide-function (lambda (frame) (bury-buffer)))
+
 ;; Unfortunately my OS X window manager (Divvy) doesn't work with X11 windows.
 (defun my-frame-move (position)
   (interactive "cPosition (D/F left/right; J/K/L left/middle/right; SPC fullscreen): ")
