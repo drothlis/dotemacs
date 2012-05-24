@@ -212,8 +212,12 @@ word boundaries) in text-mode-hook."
 (setq ido-save-directory-list-file "~/.emacs.d/.ido.last")
 (ido-mode 1)
 (ido-ubiquitous-mode)
-(setq ido-enable-flex-matching t)
-(setq ido-default-buffer-method 'selected-window)
+(setq ido-enable-flex-matching t
+      ido-default-buffer-method 'selected-window
+      ido-use-filename-at-point 'guess
+      ido-auto-merge-work-directories-length -1 ; disable auto-search; use M-s
+      ido-create-new-buffer 'always
+      ido-use-virtual-buffers t)        ; keep recently-closed buffers in list
 
 ;; Allows C-u C-SPC C-SPC instead of C-u C-SPC C-u C-SPC
 (setq set-mark-command-repeat-pop t)
