@@ -208,6 +208,10 @@
 ;; Allows C-u C-SPC C-SPC instead of C-u C-SPC C-u C-SPC
 (setq set-mark-command-repeat-pop t)
 
+;; Enable desktop-save-mode whenever I use desktop-change-dir
+(eval-after-load 'desktop
+  '(add-hook 'desktop-after-read-hook 'desktop-save-mode))
+
 
 ;;; Text
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
