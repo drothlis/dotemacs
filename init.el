@@ -140,6 +140,7 @@ word boundaries) in text-mode-hook."
 (cond
  ((eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Menlo" :height 120)
+  (set-fontset-font "fontset-default" 'unicode "Menlo")
   (set-face-attribute 'variable-pitch nil :family "Verdana" :height 140))
  (t
   (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 100)))
