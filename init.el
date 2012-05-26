@@ -270,7 +270,7 @@ word boundaries) in text-mode-hook."
 ;; And disable distracting whitespace-highlighting when in view-mode.
 (add-hook 'prog-mode-hook 'my-auto-view-mode t)
 (defun my-auto-view-mode ()
-  (if (not (member major-mode '(lisp-interaction-mode)))
+  (if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
       (view-mode)))
 (setq view-read-only t) ; enable view-mode with C-x C-q
 (defun my-toggle-read-only ()
