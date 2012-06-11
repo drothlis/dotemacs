@@ -352,7 +352,8 @@ word boundaries) in text-mode-hook."
 (when (display-graphic-p)
   (setq frame-title-format '(buffer-file-name "%f" "%b"))
   ;; Server for `emacsclient' from the shell.
-  (server-start))
+  (require 'server)
+  (unless (eq t (server-running-p)) (server-start)))
 
 (when (or (not (display-graphic-p))
           (not (eq system-type 'darwin)))
