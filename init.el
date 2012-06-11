@@ -272,7 +272,8 @@ word boundaries) in text-mode-hook."
 (add-hook 'prog-mode-hook 'my-auto-view-mode t)
 (defun my-auto-view-mode ()
   (if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
-      (view-mode)))
+      (view-mode)
+    (whitespace-mode)))
 (setq view-read-only t) ; enable view-mode with C-x C-q
 (defun my-toggle-read-only ()
   (interactive)
