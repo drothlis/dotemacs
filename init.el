@@ -75,11 +75,7 @@
 
 (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
 
-(when (display-graphic-p)
-  (global-set-key (kbd "C-x C-c") 'my-ask-before-quitting))
-
 (when (eq system-type 'darwin)  ; OS X
-  ;;(global-set-key (kbd "s-q") 'my-ask-before-quitting)
   (setq mac-command-modifier 'meta)
   (global-set-key (kbd "M-`") 'other-frame)
   (eval-after-load 'term '(define-key term-raw-map (kbd "M-`") nil)))
@@ -125,13 +121,6 @@ word boundaries) in text-mode-hook."
   "Kill current buffer without confirmation (unless modified)."
   (interactive)
   (kill-buffer (current-buffer)))
-
-(defun my-ask-before-quitting ()
-  "Prompt before quitting Emacs."
-  (interactive)
-  (if (y-or-n-p "Are you sure you want to exit Emacs? ")
-      (save-buffers-kill-emacs)
-    (message "Canceled exit")))
 
 
 ;;; Typography & colours
@@ -350,6 +339,7 @@ word boundaries) in text-mode-hook."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (display-graphic-p)
+  (setq confirm-kill-emacs 'y-or-n-p)
   (setq frame-title-format '(buffer-file-name "%f" "%b"))
   ;; Server for `emacsclient' from the shell.
   (require 'server)
