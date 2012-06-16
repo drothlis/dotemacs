@@ -190,6 +190,10 @@ word boundaries) in text-mode-hook."
      (set-face-attribute 'whitespace-trailing nil
                          :background "#fff0f0" :foreground "#cccccc")))
 
+(eval-after-load 'ido
+  ;; Face for "virtual" (recently-closed) buffers. TODO: Improve ido-virtual docstring.
+  '(set-face-attribute 'ido-virtual nil :foreground "#7f7f7f"))
+
 (global-hl-line-mode)
 
 
