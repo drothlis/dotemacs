@@ -400,6 +400,7 @@ word boundaries) in text-mode-hook."
 (setq make-backup-files nil)
 (column-number-mode)
 (setq-default truncate-lines t)
+(setq scroll-error-top-bottom t)
 (setq sentence-end-double-space nil)
 (setq-default fill-column 79)   ; use C-x f to set buffer-local value.
 (setq dired-auto-revert-buffer t)
