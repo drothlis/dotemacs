@@ -220,6 +220,8 @@ word boundaries) in text-mode-hook."
 (eval-after-load 'desktop
   '(add-hook 'desktop-after-read-hook 'desktop-save-mode))
 
+(add-hook 'occur-mode-hook 'next-error-follow-minor-mode)
+
 
 ;;; Text
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
