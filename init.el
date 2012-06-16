@@ -64,6 +64,14 @@
 
 (windmove-default-keybindings) ; S-<up> for windmove-up, etc.
 
+;; TODO: Get these in dired by default.
+(autoload 'dired-jump "dired-x"
+  "Jump to Dired buffer corresponding to current buffer." t)
+(autoload 'dired-jump-other-window "dired-x"
+  "Like \\[dired-jump] (dired-jump) but in other window." t)
+(global-set-key (kbd "C-x C-j") 'dired-jump)
+(global-set-key (kbd "C-x 4 C-j") 'dired-jump-other-window)
+
 ;; TODO: goto-last-change-with-automarks (my "C-c u") isn't autoloaded.
 (require 'goto-last-change)
 
@@ -221,6 +229,9 @@ word boundaries) in text-mode-hook."
   '(add-hook 'desktop-after-read-hook 'desktop-save-mode))
 
 (add-hook 'occur-mode-hook 'next-error-follow-minor-mode)
+
+(eval-after-load 'dired '(require 'dired-x))
+(add-hook 'dired-mode-hook 'dired-omit-mode)
 
 
 ;;; Text
