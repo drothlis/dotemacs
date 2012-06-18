@@ -288,6 +288,8 @@ word boundaries) in text-mode-hook."
 (global-set-key (kbd "C-x C-q") 'my-toggle-read-only)
 (eval-after-load 'view
   '(define-key view-mode-map "e" 'my-toggle-read-only))
+(add-hook 'after-save-hook
+  (lambda () (if (derived-mode-p 'prog-mode) (my-auto-view-mode))))
 
 ;; Create our own style for c-mode and friends
 (c-add-style
