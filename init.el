@@ -401,7 +401,10 @@ word boundaries) in text-mode-hook."
   (setq ispell-program-name "/opt/local/bin/aspell")
   (setenv "ASPELL_CONF" nil)
   ;; OS X 'ls' doesn't support '--dired' flag.
-  (setq dired-use-ls-dired nil))
+  (setq dired-use-ls-dired nil)
+  ;; Use Spotlight for M-x locate
+  (setq locate-command "mdfind")
+  )
 
 
 ;;; Misc
