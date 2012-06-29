@@ -228,6 +228,11 @@ word boundaries) in text-mode-hook."
 (eval-after-load 'desktop
   '(add-hook 'desktop-after-read-hook 'desktop-save-mode))
 
+;; Remember cursor position in each file
+(require 'saveplace)
+(setq save-place-file "~/.emacs.d/saved-places")
+(setq-default save-place t)
+
 (add-hook 'occur-mode-hook 'next-error-follow-minor-mode)
 
 (eval-after-load 'dired '(require 'dired-x))
