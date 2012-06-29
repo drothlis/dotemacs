@@ -324,7 +324,9 @@ word boundaries) in text-mode-hook."
     (vc-git-command buf 'async nil "blame" "--date=iso" "-C" "-C" "-w" rev "--" name)))
 
 (eval-after-load 'magit
-  (add-hook 'magit-log-edit-mode-hook (lambda () (set-fill-column 72))))
+  (progn
+    (setq magit-status-buffer-switch-function 'switch-to-buffer)
+    (add-hook 'magit-log-edit-mode-hook (lambda () (set-fill-column 72)))))
 
 (add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
 (eval-after-load 'ruby-mode
