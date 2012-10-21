@@ -238,6 +238,8 @@ word boundaries) in text-mode-hook."
 (eval-after-load 'dired '(require 'dired-x))
 (add-hook 'dired-mode-hook 'dired-omit-mode)
 
+(put 'set-goal-column 'disabled nil)
+
 
 ;;; Text
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
