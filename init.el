@@ -272,13 +272,23 @@ word boundaries) in text-mode-hook."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (show-paren-mode)
-(which-function-mode)
 (add-hook 'prog-mode-hook 'eldoc-mode)
 (setq-default indent-tabs-mode nil)
 (add-hook 'prog-mode-hook 'fci-mode)
 
 (add-hook 'prog-mode-hook 'outline-minor-mode)
 (eval-after-load 'outline '(require 'outline-magic)) ; provides `outline-cycle'
+
+(which-function-mode)
+;; Bring mode-line-misc-info (for which-function) before mode-line-modes
+(setq-default mode-line-format
+  '("%e" mode-line-front-space mode-line-mule-info
+    mode-line-client mode-line-modified mode-line-remote
+    mode-line-frame-identification mode-line-buffer-identification "  "
+    mode-line-position
+    mode-line-misc-info
+    (vc-mode vc-mode) "  "
+    mode-line-modes mode-line-end-spaces))
 
 ;; TAB completes using completion-at-point, which uses language-appropriate
 ;; completion (the Emacs interpreter's internal knowledge in elisp modes, tags
