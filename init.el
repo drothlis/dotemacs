@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; Turn off scrollbars early in startup to avoid window width weirdness.
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -129,6 +131,11 @@ word boundaries) in text-mode-hook."
   "Kill current buffer without confirmation (unless modified)."
   (interactive)
   (kill-buffer (current-buffer)))
+
+(defun do-after-save (after-save-command)
+  "Run the specified command after every time the current buffer is saved"
+  (interactive "MShell command to run after saving this buffer: ")
+  (add-hook 'after-save-hook (lambda () (shell-command after-save-command)) t t))
 
 
 ;;; Typography & colours
