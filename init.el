@@ -49,14 +49,19 @@
 
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c g") 'magit-status)
-(global-set-key (kbd "C-c l") 'my-toggle-truncate-lines)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-c t") 'my-cycle-tab-width)
 (global-set-key (kbd "C-c u") 'goto-last-change-with-auto-marks)
+(global-set-key (kbd "C-c w") 'my-toggle-truncate-lines)
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "C-c .") 'imenu)
 (global-set-key (kbd "C-c \\") 'align-regexp)
 (global-set-key (kbd "C-c SPC") 'my-frame-move)
+
+;; Suggested by "The compact org-mode guide"
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c b") 'org-iswitchb)
 
 ;; Use regex searches by default
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
