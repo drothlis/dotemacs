@@ -245,6 +245,11 @@ word boundaries) in text-mode-hook."
 (setq save-place-file "~/.emacs.d/saved-places")
 (setq-default save-place t)
 
+;; Remember minibuffer history
+(require 'savehist)
+(setq savehist-file "~/.emacs.d/saved-history")
+(savehist-mode 1)
+
 (add-hook 'occur-mode-hook 'next-error-follow-minor-mode)
 
 (eval-after-load 'dired '(require 'dired-x))
