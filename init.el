@@ -476,3 +476,11 @@ word boundaries) in text-mode-hook."
      (when usb-serial-ports
        (setq serial-name-history usb-serial-ports)
        (setq serial-speed-history (cons "115200" serial-speed-history)))))
+
+
+;;; YouView
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'python-mode-hook
+  (lambda () (if (string-match "uitests" buffer-file-truename)
+            (turn-on-iimage-mode))))
