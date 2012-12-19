@@ -91,6 +91,9 @@
 
 (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
 
+(eval-after-load 'cc-mode
+  '(define-key c-mode-base-map (kbd "C-c .") nil))
+
 (when (eq system-type 'darwin)  ; OS X
   (setq mac-command-modifier 'meta)
   (global-set-key (kbd "M-`") 'other-frame)
