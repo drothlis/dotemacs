@@ -94,6 +94,13 @@
 (eval-after-load 'cc-mode
   '(define-key c-mode-base-map (kbd "C-c .") nil))
 
+;; For consistency with help-mode history navigation keybindings.
+;; TODO: Submit to Emacs?
+(eval-after-load 'info
+  '(progn
+     (define-key Info-mode-map (kbd "C-c C-b") 'Info-history-back)
+     (define-key Info-mode-map (kbd "C-c C-f") 'Info-history-forward)))
+
 (when (eq system-type 'darwin)  ; OS X
   (setq mac-command-modifier 'meta)
   (global-set-key (kbd "M-`") 'other-frame)
