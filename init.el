@@ -86,7 +86,9 @@
 (require 'goto-last-change)
 
 (eval-after-load 'outline
-  '(define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle))
+  '(progn
+     (require 'outline-magic)
+     (define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle)))
 
 (add-hook 'diff-mode-hook
   (lambda () (local-unset-key (kbd "M-q")))) ; don't override fill-paragraph.
@@ -287,7 +289,6 @@ word boundaries) in text-mode-hook."
 (add-hook 'prog-mode-hook 'fci-mode)
 
 (add-hook 'prog-mode-hook 'outline-minor-mode)
-(eval-after-load 'outline '(require 'outline-magic)) ; provides `outline-cycle'
 
 (which-function-mode)
 ;; Bring mode-line-misc-info (for which-function) before mode-line-modes
