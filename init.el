@@ -6,9 +6,8 @@
 
 (require 'cl)
 
-
+
 ;;; Package manager
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'package)
 (nconc package-archives
@@ -25,6 +24,7 @@
     ido-ubiquitous
     magit
     outline-magic
+    page-break-lines
     paredit
     pretty-symbols-mode
     ))
@@ -35,9 +35,8 @@
 ;; Not available as a package
 (add-to-list 'load-path (concat user-emacs-directory "non-elpa"))
 
-
+
 ;;; Keys
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 (global-set-key (kbd "C-w") 'my-kill-region-or-backward-kill-word)
@@ -47,6 +46,9 @@
 (global-set-key (kbd "<f5>") 'switch-to-prev-buffer)
 (global-set-key (kbd "<f6>") 'switch-to-next-buffer)
 (global-set-key (kbd "<f7>") 'recompile)
+
+(global-set-key (kbd "<next>") 'forward-page) ; page down
+(global-set-key (kbd "<prior>") 'backward-page) ; page up
 
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c g") 'magit-status)
@@ -106,9 +108,8 @@
   (global-set-key (kbd "M-`") 'other-frame)
   (eval-after-load 'term '(define-key term-raw-map (kbd "M-`") nil)))
 
-
+
 ;;; Misc. commands
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun my-kill-region-or-backward-kill-word (&optional arg region)
   "`kill-region' if the region is active, otherwise `backward-kill-word'."
@@ -153,9 +154,8 @@ word boundaries) in text-mode-hook."
   (interactive "MShell command to run after saving this buffer: ")
   (add-hook 'after-save-hook (lambda () (shell-command after-save-command)) t t))
 
-
+
 ;;; Typography & colours
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (cond
  ((eq system-type 'darwin)
@@ -227,9 +227,8 @@ word boundaries) in text-mode-hook."
 
 (global-hl-line-mode)
 
-
+
 ;;; Navigation
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
@@ -243,6 +242,8 @@ word boundaries) in text-mode-hook."
       ido-auto-merge-work-directories-length -1 ; disable auto-search; use M-s
       ido-create-new-buffer 'always
       ido-use-virtual-buffers t)        ; keep recently-closed buffers in list
+
+(global-page-break-lines-mode)
 
 ;; Allows C-u C-SPC C-SPC instead of C-u C-SPC C-u C-SPC
 (setq set-mark-command-repeat-pop t)
@@ -268,9 +269,8 @@ word boundaries) in text-mode-hook."
 
 (put 'set-goal-column 'disabled nil)
 
-
+
 ;;; Text
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq-default major-mode 'text-mode)
 
@@ -278,9 +278,8 @@ word boundaries) in text-mode-hook."
 (add-hook 'sgml-mode-hook (lambda () (visual-line-mode -1))) ; ...except in html-mode
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
-
+
 ;;; Programming
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (show-paren-mode)
 (add-hook 'prog-mode-hook 'eldoc-mode)
@@ -376,15 +375,13 @@ word boundaries) in text-mode-hook."
      (setq ruby-deep-indent-paren nil)
      (setq ruby-insert-encoding-magic-comment nil))) ; ANNOYING!
 
-
+
 ;;; Shell mode and shell commands (M-x grep etc.)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setenv "PAGER" "/bin/cat")
 
-
+
 ;;; Info
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (eval-after-load 'info
   '(progn
@@ -393,9 +390,8 @@ word boundaries) in text-mode-hook."
 
 (require 'pydoc-info)
 
-
+
 ;;; GUI
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (display-graphic-p)
   (setq confirm-kill-emacs 'y-or-n-p)
@@ -427,9 +423,8 @@ word boundaries) in text-mode-hook."
     ((eq position #x20) '(0 . 238))     ; full screen (spacebar)
     (t (error "my-frame-move: Invalid position code")))))
 
-
+
 ;;; OS X
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (when (eq system-type 'darwin)
   (setenv "PATH" (concat
@@ -446,9 +441,8 @@ word boundaries) in text-mode-hook."
   (setq locate-command "mdfind")
   )
 
-
+
 ;;; Misc
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (tooltip-mode -1)
 (setq visible-bell t)
@@ -477,9 +471,8 @@ word boundaries) in text-mode-hook."
        (setq serial-name-history usb-serial-ports)
        (setq serial-speed-history (cons "115200" serial-speed-history)))))
 
-
+
 ;;; YouView
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-hook 'python-mode-hook
   (lambda () (if (string-match "uitests" buffer-file-truename)
