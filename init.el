@@ -18,7 +18,8 @@
   (package-refresh-contents))
 
 (defvar my-packages
-  '(fill-column-indicator
+  '(flycheck
+    fill-column-indicator
     goto-last-change
     haml-mode
     ido-ubiquitous
@@ -472,6 +473,24 @@ word boundaries) in text-mode-hook."
 
 ;;; YouView
 
+(eval-after-load 'flycheck
+  '(progn
+     (flycheck-declare-checker my-flycheck-checker-python-uitests-pylint
+       :command '("~/work/youview/uitests/tools/pylint.sh" source-inplace)
+       :error-patterns
+       '(;; pylint
+         ("^\\(?1:.*\\):\\(?2:[0-9]+\\): \\[E.*\\] \\(?4:.*\\)$" error)
+         ;; pep8
+         ("^\\(?1:.*\\):\\(?2:[0-9]+\\):\\(?:\\(?3:[0-9]+\\):\\) E[0-9]+ \\(?4:.*\\)$"
+          error)
+         ("^\\(?1:.*\\):\\(?2:[0-9]+\\):\\(?:\\(?3:[0-9]+\\):\\) W[0-9]+ \\(?4:.*\\)$"
+          warning))
+       :modes 'python-mode
+       :predicate (string-match "uitests" buffer-file-truename))
+     (add-to-list 'flycheck-checkers 'my-flycheck-checker-python-uitests-pylint)
+     (setq flycheck-ignore-columns t)))
+
 (add-hook 'python-mode-hook
-  (lambda () (if (string-match "uitests" buffer-file-truename)
-            (turn-on-iimage-mode))))
+  (lambda () (when (string-match "uitests" buffer-file-truename)
+          (flycheck-mode-on)
+          (turn-on-iimage-mode))))
