@@ -421,22 +421,6 @@ word boundaries) in text-mode-hook."
 ;; Stop "q" within a full-frame help or magit buffer from minimising the frame.
 (setq frame-auto-hide-function (lambda (frame) (bury-buffer)))
 
-;; Unfortunately my OS X window manager (Divvy) doesn't work with X11 windows.
-(defun my-frame-move (position)
-  (interactive "cPosition (D/F left/right; J/K/L left/middle/right; SPC fullscreen): ")
-  ((lambda (l+w)
-     (let ((l (car l+w)) (w (cdr l+w)))
-       (modify-frame-parameters nil `((left . ,l) (width . ,w)
-                                      (top . 0) (height . 68)))))
-   (cond
-    ((eq position ?h) '(0 . 80))        ; left 1/3 (qwerty J)
-    ((eq position ?t) '(610 . 80))      ; middle 1/3 (qwerty K)
-    ((eq position ?n) '(1265 . 80))     ; right 1/3 (qwerty L)
-    ((eq position ?e) '(0 . 118))       ; left 1/2 (qwerty D)
-    ((eq position ?u) '(960 . 118))     ; right 1/2 (qwerty F)
-    ((eq position #x20) '(0 . 238))     ; full screen (spacebar)
-    (t (error "my-frame-move: Invalid position code")))))
-
 
 ;;; OS X
 
