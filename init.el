@@ -18,7 +18,8 @@
   (package-refresh-contents))
 
 (defvar my-packages
-  '(flycheck
+  '(expand-region
+    flycheck
     fill-column-indicator
     goto-last-change
     haml-mode
@@ -43,6 +44,7 @@
 (global-set-key (kbd "C-w") 'my-kill-region-or-backward-kill-word)
 (global-set-key (kbd "C-x k") 'my-kill-buffer)
 (global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "C-=") 'er/expand-region)
 
 (global-set-key (kbd "<f5>") 'switch-to-prev-buffer)
 (global-set-key (kbd "<f6>") 'switch-to-next-buffer)
