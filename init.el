@@ -49,6 +49,7 @@
 (global-set-key (kbd "<f5>") 'switch-to-prev-buffer)
 (global-set-key (kbd "<f6>") 'switch-to-next-buffer)
 (global-set-key (kbd "<f7>") 'recompile)
+(global-set-key (kbd "<f8>") 'iimage-mode)
 
 (global-set-key (kbd "<next>") 'forward-page) ; page down
 (global-set-key (kbd "<prior>") 'backward-page) ; page up
