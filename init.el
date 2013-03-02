@@ -24,6 +24,7 @@
     goto-last-change
     haml-mode
     ido-ubiquitous
+    imenu-anywhere
     magit
     outline-magic
     page-break-lines
@@ -62,6 +63,7 @@
 (global-set-key (kbd "C-c w") 'my-toggle-truncate-lines)
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "C-c .") 'imenu)
+(global-set-key (kbd "C-c ,") 'imenu-anywhere)
 (global-set-key (kbd "C-c \\") 'align-regexp)
 (global-set-key (kbd "C-c SPC") 'my-frame-move)
 
