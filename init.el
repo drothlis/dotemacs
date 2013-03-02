@@ -468,7 +468,8 @@ word boundaries) in text-mode-hook."
 (eval-after-load 'term
   '(let ((usb-serial-ports
           (remove-if-not 'file-exists-p
-                         '("/dev/ttyUSB0" "/dev/ttyUSB1" "/dev/ttyUSB2"))))
+                         '("/dev/ttyUSB0" "/dev/ttyUSB1" "/dev/ttyUSB2"
+                           "/dev/tty.USA19Hfa13P1.1"))))
      (when usb-serial-ports
        (setq serial-name-history usb-serial-ports)
        (setq serial-speed-history (cons "115200" serial-speed-history)))))
