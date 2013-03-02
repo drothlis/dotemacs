@@ -480,6 +480,7 @@ word boundaries) in text-mode-hook."
 (eval-after-load 'flycheck
   '(progn
      (flycheck-declare-checker my-flycheck-checker-python-uitests-pylint
+       "Run custom pylint & pep8 checks for YouView uitests repository"
        :command '("~/work/youview/uitests/tools/pylint.sh" source-inplace)
        :error-patterns
        '(;; pylint
@@ -495,5 +496,5 @@ word boundaries) in text-mode-hook."
 
 (add-hook 'python-mode-hook
   (lambda () (when (string-match "uitests" buffer-file-truename)
-          (flycheck-mode-on)
+          (flycheck-mode 1)
           (turn-on-iimage-mode))))
