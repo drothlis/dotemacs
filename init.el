@@ -410,8 +410,8 @@ word boundaries) in text-mode-hook."
 
 (eval-after-load 'info
   '(progn
-     (push "/opt/local/share/info" Info-default-directory-list)
-     (push "~/work/info" Info-default-directory-list)))
+     (setq Info-additional-directory-list
+           '("~/work/info" "/opt/local/share/info"))))
 
 (require 'pydoc-info)
 
