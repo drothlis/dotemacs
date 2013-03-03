@@ -23,6 +23,7 @@
     fill-column-indicator
     goto-last-change
     haml-mode
+    htmlize
     ido-ubiquitous
     imenu-anywhere
     magit
