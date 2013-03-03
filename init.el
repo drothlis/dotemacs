@@ -196,6 +196,10 @@ word boundaries) in text-mode-hook."
      (set-face-attribute 'diff-added nil :foreground "#005f00")
      (set-face-attribute 'diff-removed nil :foreground "#af0000")))
 
+(eval-after-load 'flycheck
+  '(progn
+     (setq flycheck-highlighting-mode nil)))
+
 (eval-after-load 'hi-lock
   '(progn
      (set-face-attribute 'hi-yellow nil :background "#fff58f")
