@@ -27,6 +27,7 @@
     ido-ubiquitous
     imenu-anywhere
     magit
+    markdown-mode
     outline-magic
     page-break-lines
     paredit
@@ -290,6 +291,8 @@ word boundaries) in text-mode-hook."
 (add-hook 'text-mode-hook 'visual-line-mode) ; virtual line wrapping
 (add-hook 'sgml-mode-hook (lambda () (visual-line-mode -1))) ; ...except in html-mode
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 
 ;;; Programming
