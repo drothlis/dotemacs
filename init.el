@@ -292,6 +292,8 @@ word boundaries) in text-mode-hook."
 (add-hook 'sgml-mode-hook (lambda () (visual-line-mode -1))) ; ...except in html-mode
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
+(add-hook 'text-mode-hook 'outline-minor-mode)
+
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 
