@@ -18,7 +18,9 @@
   (package-refresh-contents))
 
 (defvar my-packages
-  '(expand-region
+  '(dired-details
+    dired-details+
+    expand-region
     flycheck
     fill-column-indicator
     goto-last-change
@@ -280,6 +282,7 @@ word boundaries) in text-mode-hook."
 
 (eval-after-load 'dired '(require 'dired-x))
 (add-hook 'dired-mode-hook 'dired-omit-mode)
+(eval-after-load 'dired '(require 'dired-details+))
 
 (put 'set-goal-column 'disabled nil)
 
