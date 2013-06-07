@@ -431,7 +431,7 @@ word boundaries) in text-mode-hook."
 (require 'pydoc-info)
 
 
-;;; GUI
+;;; GUI, frames & windows
 
 (when (display-graphic-p)
   (setq confirm-kill-emacs 'y-or-n-p)
@@ -446,6 +446,11 @@ word boundaries) in text-mode-hook."
 
 ;; Stop "q" within a full-frame help or magit buffer from minimising the frame.
 (setq frame-auto-hide-function (lambda (frame) (bury-buffer)))
+
+;; Always split windows horizontally (side-by-side) if window is wide enough;
+;; otherwise Emacs will fall back to splitting vertically, regardless of
+;; the window's height. See the help for `split-window-sensibly'.
+(setq split-height-threshold nil)
 
 
 ;;; OS X
