@@ -261,6 +261,7 @@ word boundaries) in text-mode-hook."
       ido-use-virtual-buffers t)        ; keep recently-closed buffers in list
 
 (global-page-break-lines-mode)
+(add-to-list 'page-break-lines-modes 'prog-mode)
 
 ;; Allows C-u C-SPC C-SPC instead of C-u C-SPC C-u C-SPC
 (setq set-mark-command-repeat-pop t)
