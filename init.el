@@ -20,6 +20,7 @@
 (defvar my-packages
   '(dired-details
     dired-details+
+    elpy
     expand-region
     flycheck
     fill-column-indicator
@@ -407,6 +408,12 @@ word boundaries) in text-mode-hook."
    "';'.join(module_completion('''%s'''))\n"
  python-shell-completion-string-code
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
+(elpy-enable)
+(elpy-use-ipython)
+(setq elpy-default-minor-modes '(eldoc-mode
+                                 highlight-indentation-mode
+                                 yas-minor-mode))
 
 
 ;;; Shell mode and shell commands (M-x grep etc.)
