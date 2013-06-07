@@ -423,6 +423,9 @@ word boundaries) in text-mode-hook."
 
 ;;; Info
 
+;; Note: Generate info "directory" file with:
+;;   cd /opt/local/share/info
+;;   for f in *.info; do install-info $f; done
 (eval-after-load 'info
   '(progn
      (setq Info-additional-directory-list
