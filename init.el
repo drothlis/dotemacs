@@ -510,19 +510,28 @@ word boundaries) in text-mode-hook."
 
 (eval-after-load 'flycheck
   '(progn
-     (flycheck-declare-checker my-flycheck-checker-python-uitests-pylint
-       "Run custom pylint & pep8 checks for YouView uitests repository"
-       :command '("~/work/youview/uitests/tools/pylint.sh" source-inplace)
-       :error-patterns
-       '(;; pylint
+     (setq my-pylint-error-patterns '(;; pylint
          ("^\\(?1:.*\\):\\(?2:[0-9]+\\): \\[E.*\\] \\(?4:.*\\)$" error)
+         ("^\\(?1:.*\\):\\(?2:[0-9]+\\): \\[C.*\\] \\(?4:.*\\)$" warning)
          ("^\\(?1:.*\\):\\(?2:[0-9]+\\): \\[W.*\\] \\(?4:.*\\)$" warning)
          ;; pep8
          ("^\\(?1:.*\\):\\(?2:[0-9]+\\):\\(?:\\(?3:[0-9]+\\):\\) [EW][0-9]+ \\(?4:.*\\)$"
-          warning))
+          warning)))
+     (flycheck-declare-checker uitests-checker
+       "Run custom pylint & pep8 checks for YouView uitests repository"
+       :command '("~/work/youview/uitests/tools/pylint.sh" source-inplace)
+       :error-patterns my-pylint-error-patterns
        :modes 'python-mode
-       :predicate (string-match "uitests" buffer-file-truename))
-     (add-to-list 'flycheck-checkers 'my-flycheck-checker-python-uitests-pylint)
+       :predicate (and (string-match "uitests" buffer-file-truename)
+                       (not (string-match "runner" buffer-file-truename))))
+     (flycheck-declare-checker stb-tester-checker
+       "Run custom pylint & pep8 checks for stb-tester repository"
+       :command '("~/work/youview/stb-tester/extra/pylint.sh" source-inplace)
+       :error-patterns my-pylint-error-patterns
+       :modes 'python-mode
+       :predicate (string-match "stb-tester" buffer-file-truename))
+     (add-to-list 'flycheck-checkers 'uitests-checker)
+     (add-to-list 'flycheck-checkers 'stb-tester-checker)
      (setq flycheck-ignore-columns t)))
 
 (add-hook 'python-mode-hook
