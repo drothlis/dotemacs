@@ -211,6 +211,7 @@ word boundaries) in text-mode-hook."
 
 (eval-after-load 'magit
   '(progn
+     (setq magit-sha1-abbrev-length 8)
      (set-face-attribute 'magit-diff-add nil :foreground "#005f00")
      (set-face-attribute 'magit-diff-del nil :foreground "#af0000")))
 
