@@ -383,7 +383,8 @@ word boundaries) in text-mode-hook."
 ;; A monkeypatch to cause annotate to ignore whitespace
 (defun vc-git-annotate-command (file buf &optional rev)
   (let ((name (file-relative-name file)))
-    (vc-git-command buf 'async nil "blame" "--date=iso" "-C" "-C" "-w" rev "--" name)))
+    (vc-git-command buf 'async nil
+                    "blame" "--date=iso" "-M" "-C" "-C" "-w" rev "--" name)))
 
 (eval-after-load 'magit
   (progn
