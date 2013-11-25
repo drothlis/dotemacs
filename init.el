@@ -524,14 +524,14 @@ word boundaries) in text-mode-hook."
        :command '("~/work/youview/uitests/tools/pylint.sh" source-inplace)
        :error-patterns my-pylint-error-patterns
        :modes 'python-mode
-       :predicate (and (string-match "uitests" buffer-file-truename)
-                       (not (string-match "runner" buffer-file-truename))))
+       :predicate (lambda () (and (string-match "uitests" buffer-file-truename)
+                             (not (string-match "runner" buffer-file-truename)))))
      (flycheck-declare-checker stb-tester-checker
        "Run custom pylint & pep8 checks for stb-tester repository"
        :command '("~/work/youview/stb-tester/extra/pylint.sh" source-inplace)
        :error-patterns my-pylint-error-patterns
        :modes 'python-mode
-       :predicate (string-match "stb-tester" buffer-file-truename))
+       :predicate (lambda () (string-match "stb-tester" buffer-file-truename)))
      (add-to-list 'flycheck-checkers 'uitests-checker)
      (add-to-list 'flycheck-checkers 'stb-tester-checker)
      (setq flycheck-ignore-columns t)))
