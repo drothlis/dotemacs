@@ -164,7 +164,7 @@ word boundaries) in text-mode-hook."
   (kill-buffer (current-buffer)))
 
 (defun do-after-save (after-save-command)
-  "Run the specified command after every time the current buffer is saved"
+  "Run the specified shell command after every time the current buffer is saved"
   (interactive "MShell command to run after saving this buffer: ")
   (add-hook 'after-save-hook (lambda () (shell-command after-save-command)) t t))
 
