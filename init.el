@@ -467,6 +467,8 @@ word boundaries) in text-mode-hook."
   (setq dired-use-ls-dired nil)
   ;; Use Spotlight for M-x locate
   (setq locate-command "mdfind")
+  ;; Sane trackpad scrolling
+  (setq mouse-wheel-scroll-amount '(1 ((control))))
   )
 
 
