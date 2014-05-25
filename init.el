@@ -20,6 +20,7 @@
 (defvar my-packages
   '(dired-details
     dired-details+
+    dockerfile-mode
     expand-region
     flycheck
     fill-column-indicator
@@ -34,6 +35,7 @@
     page-break-lines
     paredit
     pretty-symbols-mode
+    rust-mode
     ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
