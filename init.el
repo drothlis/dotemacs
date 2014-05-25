@@ -300,6 +300,8 @@ word boundaries) in text-mode-hook."
 (add-hook 'text-mode-hook 'outline-minor-mode)
 
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+(setq-default markdown-indent-on-enter nil)
+
 
 
 ;;; Programming
