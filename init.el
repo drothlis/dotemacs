@@ -302,6 +302,7 @@ word boundaries) in text-mode-hook."
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 (setq-default markdown-indent-on-enter nil)
 
+(put 'upcase-region 'disabled nil)
 
 
 ;;; Programming
