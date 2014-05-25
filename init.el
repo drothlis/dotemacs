@@ -212,7 +212,9 @@ word boundaries) in text-mode-hook."
   '(progn
      (setq magit-sha1-abbrev-length 8)
      (set-face-attribute 'magit-diff-add nil :foreground "#005f00")
-     (set-face-attribute 'magit-diff-del nil :foreground "#af0000")))
+     (set-face-attribute 'magit-diff-del nil :foreground "#af0000")
+     (set-face-attribute 'magit-item-highlight nil :background
+                         (face-background 'highlight))))
 
 (eval-after-load 'sh-script
   '(progn
