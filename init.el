@@ -18,8 +18,7 @@
   (package-refresh-contents))
 
 (defvar my-packages
-  '(confluence
-    dired-details
+  '(dired-details
     dired-details+
     expand-region
     flycheck
@@ -503,12 +502,6 @@ word boundaries) in text-mode-hook."
 
 
 ;;; YouView
-
-(require 'confluence)
-(setq confluence-url "https://wiki.youview.co.uk/rpc/xmlrpc")
-(setq confluence-save-credentials t)  ; saves in memory for this session only
-(setq confluence-save-page-minor-edits 'ask)
-(setq confluence-save-page-comments t)
 
 (eval-after-load 'flycheck
   '(progn
