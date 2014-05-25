@@ -290,6 +290,7 @@ word boundaries) in text-mode-hook."
 (add-hook 'dired-mode-hook 'dired-omit-mode)
 (eval-after-load 'dired '(require 'dired-details+))
 
+(put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 
 
