@@ -411,6 +411,10 @@ word boundaries) in text-mode-hook."
  python-shell-completion-string-code
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
+(add-hook 'python-mode-hook
+          (lambda () (setq imenu-create-index-function
+                      #'python-imenu-create-flat-index)))
+
 
 ;;; Shell mode and shell commands (M-x grep etc.)
 
