@@ -34,7 +34,6 @@
     outline-magic
     page-break-lines
     paredit
-    pretty-symbols-mode
     rust-mode
     ))
 (dolist (p my-packages)
@@ -380,9 +379,6 @@ word boundaries) in text-mode-hook."
 (setq c-default-style "my-c-style")
 
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
-
-(setq pretty-symbol-categories '(lambda relational))
-(add-hook 'prog-mode-hook 'pretty-symbols-mode)
 
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 ;; Don't enable paredit by default in other languages, but when I do want it:
