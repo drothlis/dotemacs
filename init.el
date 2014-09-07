@@ -260,9 +260,14 @@ word boundaries) in text-mode-hook."
 (setq ido-enable-flex-matching t
       ido-default-buffer-method 'selected-window
       ido-use-filename-at-point 'guess
+      ido-use-url-at-point nil
       ido-auto-merge-work-directories-length -1 ; disable auto-search; use M-s
       ido-create-new-buffer 'always
       ido-use-virtual-buffers t)        ; keep recently-closed buffers in list
+(setq ffap-url-regexp nil) ; disable URL lookup in ido-use-filename-at-point
+(setq ffap-machine-p-known 'reject)
+(setq ffap-machine-p-local 'reject)
+(setq ffap-machine-p-unknown 'reject)
 
 (global-page-break-lines-mode)
 (add-to-list 'page-break-lines-modes 'prog-mode)
