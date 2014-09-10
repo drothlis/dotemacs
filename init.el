@@ -47,7 +47,6 @@
 ;;; Keys
 
 (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-(global-set-key (kbd "C-w") 'my-kill-region-or-backward-kill-word)
 (global-set-key (kbd "C-x k") 'my-kill-buffer)
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-=") 'er/expand-region)
@@ -123,14 +122,6 @@
 
 
 ;;; Misc. commands
-
-(defun my-kill-region-or-backward-kill-word (&optional arg region)
-  "`kill-region' if the region is active, otherwise `backward-kill-word'."
-  (interactive
-   (list (prefix-numeric-value current-prefix-arg) (use-region-p)))
-  (if region
-      (kill-region (region-beginning) (region-end))
-    (backward-kill-word arg)))
 
 (defun my-cycle-tab-width ()
   "Cycle tab-width between values 2, 4, and 8."
