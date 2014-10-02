@@ -26,6 +26,7 @@
     fill-column-indicator
     goto-last-change
     haml-mode
+    highlight-symbol
     htmlize
     ido-ubiquitous
     imenu-anywhere
@@ -341,6 +342,9 @@ word boundaries) in text-mode-hook."
     try-expand-dabbrev-from-kill
     try-complete-lisp-symbol-partially
     try-complete-lisp-symbol))
+
+(setq highlight-symbol-idle-delay 0.1)
+(add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
 ;; Disable distracting whitespace-mode highlighting when in view-mode.
 (add-hook 'prog-mode-hook 'whitespace-mode)
