@@ -75,7 +75,8 @@
 ;; Suggested by "The compact org-mode guide"
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c b") 'org-iswitchb)
+(global-set-key (kbd "C-c b") 'org-switchb)
+(setq org-completion-use-ido t)
 
 ;; Use regex searches by default
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
