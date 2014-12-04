@@ -30,6 +30,8 @@
     htmlize
     ido-ubiquitous
     imenu-anywhere
+    jinja2-mode
+    lua-mode
     magit
     markdown-mode
     outline-magic
