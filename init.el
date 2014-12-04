@@ -61,6 +61,7 @@
 (global-set-key (kbd "<prior>") 'backward-page) ; page up
 
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c c") 'git-grep)
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key (kbd "C-c t") 'my-cycle-tab-width)
@@ -394,6 +395,11 @@ word boundaries) in text-mode-hook."
   (progn
     (setq magit-status-buffer-switch-function 'switch-to-buffer)
     (add-hook 'magit-log-edit-mode-hook (lambda () (set-fill-column 72)))))
+
+(defun git-grep (search-term)           ; https://www.ogre.com/node/447
+  "git-grep the entire current repo"
+  (interactive (list (completing-read "Search for: " nil nil nil (current-word))))
+  (grep-find (concat "git grep -P -n -e " search-term " `git rev-parse --show-toplevel`")))
 
 (add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
 (eval-after-load 'ruby-mode
