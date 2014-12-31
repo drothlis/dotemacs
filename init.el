@@ -18,7 +18,8 @@
   (package-refresh-contents))
 
 (defvar my-packages
-  '(dired-details
+  '(diff-hl
+    dired-details
     dired-details+
     dockerfile-mode
     expand-region
@@ -428,6 +429,8 @@ word boundaries) in text-mode-hook."
 (add-hook 'python-mode-hook
           (lambda () (setq imenu-create-index-function
                       #'python-imenu-create-flat-index)))
+
+(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
 
 
 ;;; Shell mode and shell commands (M-x grep etc.)
