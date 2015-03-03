@@ -472,6 +472,19 @@ word boundaries) in text-mode-hook."
 ;; the window's height. See the help for `split-window-sensibly'.
 (setq split-height-threshold nil)
 
+;; Home-made 3-column window positioning in X11.
+;; Coordinates are hardcoded to my 2560x1600 laptop screen.
+(defun my-frame-move (position)
+  (interactive "cPosition (J/K/L left/middle/right): ")
+  ((lambda (l)
+     (modify-frame-parameters nil `((left . ,l) (width . 81)
+                                      (top . 0) (height . 100))))
+   (cond
+    ((eq position ?h) 50)     ; qwerty J
+    ((eq position ?t) 320)   ; qwerty K
+    ((eq position ?n) 1720)  ; qwerty L
+    (t (error "my-frame-move: Invalid position code")))))
+
 
 ;;; OS X
 
