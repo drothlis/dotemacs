@@ -541,31 +541,28 @@ word boundaries) in text-mode-hook."
 
 (eval-after-load 'flycheck
   '(progn
-     (setq my-pylint-error-patterns '(;; pylint
-         ("^\\(?1:.*\\):\\(?2:[0-9]+\\): \\[E.*\\] \\(?4:.*\\)$" error)
-         ("^\\(?1:.*\\):\\(?2:[0-9]+\\): \\[C.*\\] \\(?4:.*\\)$" warning)
-         ("^\\(?1:.*\\):\\(?2:[0-9]+\\): \\[W.*\\] \\(?4:.*\\)$" warning)
-         ;; pep8
-         ("^\\(?1:.*\\):\\(?2:[0-9]+\\):\\(?:\\(?3:[0-9]+\\):\\) [EW][0-9]+ \\(?4:.*\\)$"
-          warning)))
-     (flycheck-declare-checker uitests-checker
-       "Run custom pylint & pep8 checks for YouView uitests repository"
-       :command '("~/work/youview/uitests/tools/pylint.sh" source-inplace)
-       :error-patterns my-pylint-error-patterns
-       :modes 'python-mode
-       :predicate (lambda () (and (string-match "uitests" buffer-file-truename)
-                             (not (string-match "runner" buffer-file-truename)))))
-     (flycheck-declare-checker stb-tester-checker
+     (flycheck-define-checker stb-tester-checker
        "Run custom pylint & pep8 checks for stb-tester repository"
-       :command '("~/work/youview/stb-tester/extra/pylint.sh" source-inplace)
-       :error-patterns my-pylint-error-patterns
-       :modes 'python-mode
+       :command ("~/work/stb-tester.com/stb-tester/extra/pylint.sh" source-inplace)
+       :error-patterns
+       ((error line-start (file-name) ":" line ": [E" (one-or-more not-newline) "] " (message))
+        (warning line-start (file-name) ":" line ": [" (in "WC") (one-or-more not-newline) "] " (message))
+        (warning line-start (file-name) ":" line ":" column ": " (message)))
+       :modes python-mode
        :predicate (lambda () (string-match "stb-tester" buffer-file-truename)))
-     (add-to-list 'flycheck-checkers 'uitests-checker)
+     (flycheck-define-checker tugo-tests-checker
+       "Run custom pylint & pep8 checks for tugo-tests repository"
+       :command ("~/work/stb-tester.com/tugo-tests/tools/pylint.sh" source-inplace)
+       :error-patterns
+       ((error line-start (file-name) ":" line ": [E" (one-or-more not-newline) "] " (message))
+        (warning line-start (file-name) ":" line ": [" (in "WC") (one-or-more not-newline) "] " (message))
+        (warning line-start (file-name) ":" line ":" column ": " (message)))
+       :modes python-mode
+       :predicate (lambda () (string-match "tugo-tests" buffer-file-truename)))
      (add-to-list 'flycheck-checkers 'stb-tester-checker)
+     (add-to-list 'flycheck-checkers 'tugo-tests-checker)
      (setq flycheck-ignore-columns t)))
 
 (add-hook 'python-mode-hook
-  (lambda () (when (string-match "uitests" buffer-file-truename)
-          (flycheck-mode 1)
-          (turn-on-iimage-mode))))
+          (lambda () (when (string-match "tugo-tests" buffer-file-truename)
+                       (flycheck-mode 1))))
