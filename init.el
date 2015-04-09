@@ -321,6 +321,8 @@ word boundaries) in text-mode-hook."
 
 (add-hook 'prog-mode-hook 'outline-minor-mode)
 
+(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+
 (which-function-mode)
 ;; Bring mode-line-misc-info (for which-function) before mode-line-modes
 (setq-default mode-line-format
@@ -430,7 +432,6 @@ word boundaries) in text-mode-hook."
           (lambda () (setq imenu-create-index-function
                       #'python-imenu-create-flat-index)))
 
-(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
 
 
 ;;; Shell mode and shell commands (M-x grep etc.)
