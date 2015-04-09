@@ -432,6 +432,31 @@ word boundaries) in text-mode-hook."
           (lambda () (setq imenu-create-index-function
                       #'python-imenu-create-flat-index)))
 
+;; Teach js-mode/imenu about Angular-style functions/classes. Taken from
+;; https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-javascript.el
+(setq javascript-common-imenu-regex-list
+      '(("Controller" "[. \t]controller([ \t]*['\"]\\([^'\"]+\\)" 1)
+        ("Filter" "[. \t]filter([ \t]*['\"]\\([^'\"]+\\)" 1)
+        ("Factory" "[. \t]factory([ \t]*['\"]\\([^'\"]+\\)" 1)
+        ("Service" "[. \t]service([ \t]*['\"]\\([^'\"]+\\)" 1)
+        ("Module" "[. \t]module([ \t]*['\"]\\([a-zA-Z0-9_\.]+\\)" 1)
+        ("ngRoute" "[. \t]when(\\(['\"][a-zA-Z0-9_\/]+['\"]\\)" 1)
+        ("Directive" "[. \t]directive([ \t]*['\"]\\([^'\"]+\\)" 1)
+        ("Event" "[. \t]\$on([ \t]*['\"]\\([^'\"]+\\)" 1)
+        ("Config" "[. \t]config([ \t]*function *( *\\([^\)]+\\)" 1)
+        ("Config" "[. \t]config([ \t]*\\[ *['\"]\\([^'\"]+\\)" 1)
+        ("OnChange" "[ \t]*\$(['\"]\\([^'\"]*\\)['\"]).*\.change *( *function" 1)
+        ("OnClick" "[ \t]*\$([ \t]*['\"]\\([^'\"]*\\)['\"]).*\.click *( *function" 1)
+        ("Watch" "[. \t]\$watch( *['\"]\\([^'\"]+\\)" 1)
+        ("Function" "function[ \t]+\\([a-zA-Z0-9_$.]+\\)[ \t]*(" 1)
+        ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*=[ \t]*function[ \t]*(" 1)
+        ("Task" "[. \t]task([ \t]*['\"]\\([^'\"]+\\)" 1)
+        ))
+(defun js-imenu-make-index ()
+  (save-excursion
+    (imenu--generic-function javascript-common-imenu-regex-list)))
+(add-hook 'js-mode-hook
+          (lambda () (setq imenu-create-index-function 'js-imenu-make-index)))
 
 
 ;;; Shell mode and shell commands (M-x grep etc.)
