@@ -11,8 +11,8 @@
 
 (require 'package)
 (nconc package-archives
-       '(("melpa" . "http://melpa.milkbox.net/packages/")
-         ("marmalade" . "http://marmalade-repo.org/packages/")))
+       '(("marmalade" . "http://marmalade-repo.org/packages/")
+         ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -247,7 +247,9 @@ word boundaries) in text-mode-hook."
       ido-use-url-at-point nil
       ido-auto-merge-work-directories-length -1 ; disable auto-search; use M-s
       ido-create-new-buffer 'always
-      ido-use-virtual-buffers t)        ; keep recently-closed buffers in list
+      ido-use-virtual-buffers t         ; keep recently-closed buffers in list
+      ;;ido-show-dot-for-dired t
+      )
 (setq ffap-url-regexp nil) ; disable URL lookup in ido-use-filename-at-point
 (setq ffap-machine-p-known 'reject)
 (setq ffap-machine-p-local 'reject)
@@ -261,7 +263,9 @@ word boundaries) in text-mode-hook."
 
 ;; Enable desktop-save-mode whenever I use desktop-change-dir
 (eval-after-load 'desktop
-  '(add-hook 'desktop-after-read-hook 'desktop-save-mode))
+  '(progn
+     (add-hook 'desktop-after-read-hook 'desktop-save-mode)
+     (setq desktop-restore-eager 10)))
 
 ;; Remember cursor position in each file
 (require 'saveplace)
@@ -371,6 +375,9 @@ word boundaries) in text-mode-hook."
 
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 
+;; TODO: Disable paired apostrophes inside python "" strings.
+;;(electric-pair-mode)
+
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 ;; Don't enable paredit by default in other languages, but when I do want it:
 (defun my-space-for-paredit-delimiter-p (endp delimiter)
@@ -419,6 +426,15 @@ word boundaries) in text-mode-hook."
 (add-hook 'python-mode-hook
           (lambda () (setq imenu-create-index-function
                       #'python-imenu-create-flat-index)))
+(add-hook 'python-mode-hook (lambda () (eldoc-mode -1)))
+
+(eval-after-load 'haskell-mode
+  '(progn
+     (turn-on-haskell-doc)
+     ;(turn-on-haskell-indentation)
+     (turn-on-haskell-simple-indent)))
+
+(add-hook 'html-mode-hook (lambda () (run-hooks 'prog-mode-hook)))
 
 ;; Teach js-mode/imenu about Angular-style functions/classes. Taken from
 ;; https://github.com/redguardtoo/emacs.d/blob/master/lisp/init-javascript.el
@@ -468,6 +484,8 @@ word boundaries) in text-mode-hook."
 (when (display-graphic-p)
   (setq confirm-kill-emacs 'y-or-n-p)
   (setq frame-title-format '(buffer-file-name "%f" "%b"))
+  (setq initial-frame-alist
+        '((left . 1720) (width . 81) (top . 0) (height . 100)))
   ;; Server for `emacsclient' from the shell.
   (require 'server)
   (unless (eq t (server-running-p)) (server-start)))
@@ -493,7 +511,7 @@ word boundaries) in text-mode-hook."
                                       (top . 0) (height . 100))))
    (cond
     ((eq position ?h) 50)     ; qwerty J
-    ((eq position ?t) 320)   ; qwerty K
+    ((eq position ?t) 890)   ; qwerty K
     ((eq position ?n) 1720)  ; qwerty L
     (t (error "my-frame-move: Invalid position code")))))
 
@@ -520,6 +538,10 @@ word boundaries) in text-mode-hook."
 
 ;;; Misc
 
+(setenv "PATH" (concat
+                (getenv "HOME") "/local/bin:"
+                (getenv "HOME") "/.local/bin:"
+                (getenv "PATH")))
 (tooltip-mode -1)
 (setq visible-bell t)
 (setq inhibit-startup-screen t)

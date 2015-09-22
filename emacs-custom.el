@@ -3,6 +3,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(css-indent-offset 2)
+ '(js-indent-level 2)
+ '(magit-diff-options (quote ("--histogram")))
  '(safe-local-variable-values (quote ((eval if (fboundp (quote pretty-symbols-mode)) (pretty-symbols-mode -1))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
