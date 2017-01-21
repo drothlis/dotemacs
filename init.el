@@ -39,6 +39,7 @@
     page-break-lines
     paredit
     rust-mode
+    yaml-mode
     ))
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -303,6 +304,11 @@ word boundaries) in text-mode-hook."
 
 (put 'upcase-region 'disabled nil)
 
+(setq sort-fold-case t)
+
+(eval-after-load 'markdown-mode
+  '(setq markdown-command "pandoc -f markdown_github"))
+
 
 ;;; Programming
 
@@ -393,9 +399,12 @@ word boundaries) in text-mode-hook."
                     "blame" "--date=iso" "-M" "-C" "-C" "-w" rev "--" name)))
 
 (eval-after-load 'magit
-  (progn
-    (setq magit-status-buffer-switch-function 'switch-to-buffer)
-    (add-hook 'magit-log-edit-mode-hook (lambda () (set-fill-column 72)))))
+  '(progn
+     (setq magit-status-buffer-switch-function 'switch-to-buffer)
+     (setq magit-push-always-verify nil)
+     (add-hook 'magit-log-edit-mode-hook (lambda () (set-fill-column 72)))
+     (add-to-list 'same-window-regexps "\*magit: .*\*")
+     (add-to-list 'same-window-regexps "\*magit-log: .*\*")))
 
 (defun git-grep (search-term)           ; https://www.ogre.com/node/447
   "git-grep the entire current repo"
@@ -413,16 +422,16 @@ word boundaries) in text-mode-hook."
 ;; Copied from instructions at the top of python.el
 (setq
  python-shell-interpreter "ipython"
- python-shell-interpreter-args ""
- python-shell-prompt-regexp "In \\[[0-9]+\\]: "
- python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
- python-shell-completion-setup-code
-   "from IPython.core.completerlib import module_completion"
- python-shell-completion-module-string-code
-   "';'.join(module_completion('''%s'''))\n"
- python-shell-completion-string-code
-   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
-
+ python-shell-interpreter-args "-i"
+ ;; python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+ ;; python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+ ;; python-shell-completion-setup-code
+ ;;   "from IPython.core.completerlib import module_completion"
+ ;; python-shell-completion-module-string-code
+ ;;   "';'.join(module_completion('''%s'''))\n"
+ ;; python-shell-completion-string-code
+ ;;   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+ )
 (add-hook 'python-mode-hook
           (lambda () (setq imenu-create-index-function
                       #'python-imenu-create-flat-index)))
@@ -459,6 +468,11 @@ word boundaries) in text-mode-hook."
     (imenu--generic-function javascript-common-imenu-regex-list)))
 (add-hook 'js-mode-hook
           (lambda () (setq imenu-create-index-function 'js-imenu-make-index)))
+(add-hook 'js2-mode-hook
+          (lambda () (setq imenu-create-index-function 'js-imenu-make-index)))
+(setq js2-basic-offset 2)
+
+(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
 
 ;;; Shell mode and shell commands (M-x grep etc.)
@@ -594,42 +608,77 @@ word boundaries) in text-mode-hook."
        (setq serial-speed-history (cons "115200" serial-speed-history)))))
 
 
-;;; YouView
+;;; Stb-tester
 
 (require 'flycheck)
 (flycheck-define-checker stb-tester-checker
   "Run custom pylint & pep8 checks for stb-tester repository"
-  :command ("~/work/stb-tester.com/stb-tester-one/stb-tester/stb-tester/extra/pylint.sh" source-inplace)
-  :error-patterns
-  ((error line-start (file-name) ":" line ": [E" (one-or-more not-newline) "] " (message) line-end)
-   (warning line-start (file-name) ":" line ": [" (in "CFW") (one-or-more not-newline) "] " (message) line-end)
-   (warning line-start (file-name) ":" line ":" column ": " (message) line-end))
+  :command ("~/work/stb-tester.com/stb-tester-one/stb-tester/stb-tester/extra/pylint.sh"
+            source-inplace)
+  :error-patterns ((error line-start (file-name) ":" line
+                          (zero-or-one ":" column) ": "
+                          (message) line-end))
+  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
   :modes python-mode
   :predicate (lambda () (string-match "/stb-tester/" buffer-file-truename)))
+(flycheck-define-checker stb-tester-one-checker
+  "Run custom pylint & pep8 checks for stb-tester-one repository
+  (excluding stb-tester-service)"
+  :command ("stbt" "lint"
+            "--rcfile=~/work/stb-tester.com/stb-tester-one/pylint.conf"
+            "--output-format=text"
+            "--errors-only"
+            source-inplace)
+  :error-patterns ((error line-start (file-name) ":" line
+                          (zero-or-one ":" column) ": "
+                          (message) line-end))
+  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
+  :modes python-mode
+  :predicate (lambda ()
+               (and (string-match "stb-tester-one" buffer-file-truename)
+                    (not (string-match "stb-tester-service"
+                                       buffer-file-truename))
+                    (not (string-match "/stb-tester/" buffer-file-truename)))))
 (flycheck-define-checker stb-tester-service-checker
   "Run custom pylint & pep8 checks for stb-tester-service repository"
-  :command ("~/work/stb-tester.com/stb-tester-one/test-runner/stb-tester-service/common/pylint.sh" source-inplace)
-  :error-patterns
-  ((error line-start (file-name) ":" line ": [E" (one-or-more not-newline) "] " (message) line-end)
-   (warning line-start (file-name) ":" line ": [" (in "CFW") (one-or-more not-newline) "] " (message) line-end)
-   (warning line-start (file-name) ":" line ":" column ": " (message) line-end))
+  :command ("env" "PYTHONPATH=/home/drothlis/work/stb-tester.com/stb-tester-one/test-runner/stb-tester-service"
+            "/home/drothlis/work/stb-tester.com/stb-tester-one/test-runner/stb-tester-service/pylint.sh"
+            source-inplace)
+  :error-patterns ((error line-start (file-name) ":" line
+                          (zero-or-one ":" column) ": "
+                          (message) line-end))
+  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
   :modes python-mode
-  :predicate (lambda () (string-match "stb-tester-service" buffer-file-truename)))
+  :predicate (lambda () (string-match "stb-tester-service"
+                                      buffer-file-truename)))
 (flycheck-define-checker tugo-tests-checker
   "Run custom pylint & pep8 checks for tugo-tests repository"
   :command ("~/work/stb-tester.com/tugo-tests/tools/pylint.sh" source-inplace)
-  :error-patterns
-  ((error line-start (file-name) ":" line ": [E" (one-or-more not-newline) "] " (message) line-end)
-   (warning line-start (file-name) ":" line ": [" (in "CFW") (one-or-more not-newline) "] " (message) line-end)
-   (warning line-start (file-name) ":" line ":" column ": " (message) line-end))
+  :error-patterns ((error line-start (file-name) ":" line
+                          (zero-or-one ":" column) ": "
+                          (message) line-end))
   :modes python-mode
   :predicate (lambda () (string-match "tugo-tests" buffer-file-truename)))
+(flycheck-define-checker test-pack-checker
+  "Run custom pylint checks for stb-tester-test-pack repositories"
+  :command ("stbt" "lint" "--output-format=parseable" source-inplace)
+  :working-directory (lambda (checker)
+                       (locate-dominating-file (buffer-file-name) "pylintrc"))
+  :error-patterns ((error line-start (file-name) ":" line
+                          (zero-or-one ":" column) ": "
+                          (message) line-end))
+  :modes python-mode
+  :predicate (lambda ()
+               (string-match "stb-tester-test-pack-sky" buffer-file-truename)))
 (add-to-list 'flycheck-checkers 'stb-tester-checker)
+(add-to-list 'flycheck-checkers 'stb-tester-one-checker)
 (add-to-list 'flycheck-checkers 'stb-tester-service-checker)
 (add-to-list 'flycheck-checkers 'tugo-tests-checker)
-(setq flycheck-highlighting-mode nil)
-(add-hook 'python-mode-hook
-          (lambda () (when (string-match
-                            "/\\(tugo-tests\\|stb-tester\\|stb-tester-service\\)/"
-                            buffer-file-truename)
-                       (flycheck-mode 1))))
+(add-to-list 'flycheck-checkers 'test-pack-checker)
+(setq flycheck-highlighting-mode 'symbols)
+(add-hook
+ 'python-mode-hook
+ (lambda ()
+   (when (string-match "/\\(stb-tester-test-pack-sky\\|tugo-tests\\|stb-tester\\|stb-tester-service\\|stb-tester-one\\)/"
+                       buffer-file-truename)
+     (flycheck-mode 1))))
