@@ -676,6 +676,7 @@ word boundaries) in text-mode-hook."
 (add-to-list 'flycheck-checkers 'tugo-tests-checker)
 (add-to-list 'flycheck-checkers 'test-pack-checker)
 (setq flycheck-highlighting-mode 'symbols)
+(setq flycheck-checker-error-threshold 10000)
 (add-hook
  'python-mode-hook
  (lambda ()
