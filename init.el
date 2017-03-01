@@ -641,7 +641,7 @@ word boundaries) in text-mode-hook."
                     (not (string-match "/stb-tester/" buffer-file-truename)))))
 (flycheck-define-checker stb-tester-service-checker
   "Run custom pylint & pep8 checks for stb-tester-service repository"
-  :command ("env" "PYTHONPATH=/home/drothlis/work/stb-tester.com/stb-tester-one/test-runner/stb-tester-service"
+  :command ("env" "PYTHONPATH=/home/drothlis/work/stb-tester.com/stb-tester-one/test-runner/stb-tester-service:/home/drothlis/work/stb-tester.com/stb-tester-one"
             "/home/drothlis/work/stb-tester.com/stb-tester-one/test-runner/stb-tester-service/pylint.sh"
             source-inplace)
   :error-patterns ((error line-start (file-name) ":" line
@@ -657,6 +657,7 @@ word boundaries) in text-mode-hook."
   :error-patterns ((error line-start (file-name) ":" line
                           (zero-or-one ":" column) ": "
                           (message) line-end))
+  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
   :modes python-mode
   :predicate (lambda () (string-match "tugo-tests" buffer-file-truename)))
 (flycheck-define-checker test-pack-checker
@@ -667,14 +668,28 @@ word boundaries) in text-mode-hook."
   :error-patterns ((error line-start (file-name) ":" line
                           (zero-or-one ":" column) ": "
                           (message) line-end))
+  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
   :modes python-mode
   :predicate (lambda ()
-               (string-match "stb-tester-test-pack-sky" buffer-file-truename)))
+               (string-match "stb-tester-test-pack-" buffer-file-truename)))
+(flycheck-define-checker generic-pylint-checker
+  "Run generic pylint checks"
+  :command ("pylint" "--output-format=parseable" source-inplace)
+  :working-directory (lambda (checker)
+                       (locate-dominating-file (buffer-file-name) "pylintrc"))
+  :error-patterns ((error line-start (file-name) ":" line
+                          (zero-or-one ":" column) ": "
+                          (message) line-end))
+  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
+  :modes python-mode
+  :predicate (lambda ()
+               (string-match "dockerfile-dependencies" buffer-file-truename)))
 (add-to-list 'flycheck-checkers 'stb-tester-checker)
 (add-to-list 'flycheck-checkers 'stb-tester-one-checker)
 (add-to-list 'flycheck-checkers 'stb-tester-service-checker)
 (add-to-list 'flycheck-checkers 'tugo-tests-checker)
 (add-to-list 'flycheck-checkers 'test-pack-checker)
+(add-to-list 'flycheck-checkers 'generic-pylint-checker)
 (setq flycheck-highlighting-mode 'symbols)
 (setq flycheck-checker-error-threshold 10000)
 (add-hook
