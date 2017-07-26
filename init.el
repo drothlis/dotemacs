@@ -24,6 +24,7 @@
     dockerfile-mode
     expand-region
     flycheck
+    flymd
     fill-column-indicator
     goto-last-change
     haml-mode
