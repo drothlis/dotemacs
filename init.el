@@ -40,6 +40,7 @@
     page-break-lines
     paredit
     rust-mode
+    typescript-mode
     yaml-mode
     ))
 (dolist (p my-packages)
@@ -115,6 +116,11 @@
 
 (eval-after-load 'cc-mode
   '(define-key c-mode-base-map (kbd "C-c .") nil))
+
+(eval-after-load 'diff-hl
+  '(progn
+     (global-set-key (kbd "M-g [") 'diff-hl-previous-hunk)
+     (global-set-key (kbd "M-g ]") 'diff-hl-next-hunk)))
 
 ;; For consistency with help-mode history navigation keybindings.
 ;; TODO: Submit to Emacs?
@@ -403,6 +409,7 @@ word boundaries) in text-mode-hook."
   '(progn
      (setq magit-status-buffer-switch-function 'switch-to-buffer)
      (setq magit-push-always-verify nil)
+     (setq git-commit-fill-column 72)
      (add-hook 'magit-log-edit-mode-hook (lambda () (set-fill-column 72)))
      (add-to-list 'same-window-regexps "\*magit: .*\*")
      (add-to-list 'same-window-regexps "\*magit-log: .*\*")))
@@ -614,8 +621,9 @@ word boundaries) in text-mode-hook."
 (require 'flycheck)
 (flycheck-define-checker stb-tester-checker
   "Run custom pylint & pep8 checks for stb-tester repository"
-  :command ("~/work/stb-tester.com/stb-tester-one/stb-tester/stb-tester/extra/pylint.sh"
-            source-inplace)
+  :command ("env" "PYTHONPATH=." "extra/pylint.sh" source-inplace)
+  :working-directory (lambda (checker)
+                       (locate-dominating-file (buffer-file-name) ".git"))
   :error-patterns ((error line-start (file-name) ":" line
                           (zero-or-one ":" column) ": "
                           (message) line-end))
@@ -625,77 +633,43 @@ word boundaries) in text-mode-hook."
 (flycheck-define-checker stb-tester-one-checker
   "Run custom pylint & pep8 checks for stb-tester-one repository
   (excluding stb-tester-service)"
-  :command ("stbt" "lint"
-            "--rcfile=~/work/stb-tester.com/stb-tester-one/pylint.conf"
-            "--output-format=text"
-            "--errors-only"
-            source-inplace)
+  :command ("env" "PYTHONPATH=.:./stbt-service:./stbt-control-relay/stbt-control-relay"
+            "sh" "-c"
+            "pep8 --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E731,W291,W503 $1 && stbt lint --output-format=text $1"
+            "--" source-inplace)
+  :working-directory (lambda (checker)
+                       (locate-dominating-file (buffer-file-name) ".stbt.conf"))
   :error-patterns ((error line-start (file-name) ":" line
                           (zero-or-one ":" column) ": "
                           (message) line-end))
   :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
   :modes python-mode
   :predicate (lambda ()
-               (and (string-match "stb-tester-one" buffer-file-truename)
-                    (not (string-match "stb-tester-service"
-                                       buffer-file-truename))
+               (and (string-match "stb-tester-one\\|stb-tester-node"
+                                  buffer-file-truename)
                     (not (string-match "/stb-tester/" buffer-file-truename)))))
-(flycheck-define-checker stb-tester-service-checker
-  "Run custom pylint & pep8 checks for stb-tester-service repository"
-  :command ("env" "PYTHONPATH=/home/drothlis/work/stb-tester.com/stb-tester-one/test-runner/stb-tester-service:/home/drothlis/work/stb-tester.com/stb-tester-one"
-            "/home/drothlis/work/stb-tester.com/stb-tester-one/test-runner/stb-tester-service/pylint.sh"
-            source-inplace)
-  :error-patterns ((error line-start (file-name) ":" line
-                          (zero-or-one ":" column) ": "
-                          (message) line-end))
-  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
-  :modes python-mode
-  :predicate (lambda () (string-match "stb-tester-service"
-                                      buffer-file-truename)))
-(flycheck-define-checker tugo-tests-checker
-  "Run custom pylint & pep8 checks for tugo-tests repository"
-  :command ("~/work/stb-tester.com/tugo-tests/tools/pylint.sh" source-inplace)
-  :error-patterns ((error line-start (file-name) ":" line
-                          (zero-or-one ":" column) ": "
-                          (message) line-end))
-  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
-  :modes python-mode
-  :predicate (lambda () (string-match "tugo-tests" buffer-file-truename)))
 (flycheck-define-checker test-pack-checker
-  "Run custom pylint checks for stb-tester-test-pack repositories"
-  :command ("stbt" "lint" "--output-format=parseable" source-inplace)
+  "Run stbt lint for stb-tester-test-pack repositories"
+  :command ("~/.local/bin/stbt" "lint" "--output-format=parseable" source-inplace)
   :working-directory (lambda (checker)
-                       (locate-dominating-file (buffer-file-name) "pylintrc"))
+                       (locate-dominating-file (buffer-file-name) ".pylintrc"))
   :error-patterns ((error line-start (file-name) ":" line
                           (zero-or-one ":" column) ": "
                           (message) line-end))
   :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
   :modes python-mode
   :predicate (lambda ()
-               (string-match "stb-tester-test-pack-" buffer-file-truename)))
-(flycheck-define-checker generic-pylint-checker
-  "Run generic pylint checks"
-  :command ("pylint" "--output-format=parseable" source-inplace)
-  :working-directory (lambda (checker)
-                       (locate-dominating-file (buffer-file-name) "pylintrc"))
-  :error-patterns ((error line-start (file-name) ":" line
-                          (zero-or-one ":" column) ": "
-                          (message) line-end))
-  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
-  :modes python-mode
-  :predicate (lambda ()
-               (string-match "dockerfile-dependencies" buffer-file-truename)))
+               (or (string-match "test-packs/" buffer-file-truename)
+                   (string-match "/stb-tester-test-pack/" buffer-file-truename))))
 (add-to-list 'flycheck-checkers 'stb-tester-checker)
 (add-to-list 'flycheck-checkers 'stb-tester-one-checker)
-(add-to-list 'flycheck-checkers 'stb-tester-service-checker)
-(add-to-list 'flycheck-checkers 'tugo-tests-checker)
 (add-to-list 'flycheck-checkers 'test-pack-checker)
-(add-to-list 'flycheck-checkers 'generic-pylint-checker)
+(setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
 (setq flycheck-highlighting-mode 'symbols)
 (setq flycheck-checker-error-threshold 10000)
 (add-hook
  'python-mode-hook
  (lambda ()
-   (when (string-match "/\\(stb-tester-test-pack-sky\\|tugo-tests\\|stb-tester\\|stb-tester-service\\|stb-tester-one\\)/"
+   (when (string-match "/\\(test-packs\\|stb-tester\\|stb-tester-one\\|stb-tester-node\\|stb-tester-test-pack\\)/"
                        buffer-file-truename)
      (flycheck-mode 1))))
