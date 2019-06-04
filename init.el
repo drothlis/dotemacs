@@ -320,6 +320,7 @@ word boundaries) in text-mode-hook."
 ;;; Programming
 
 (show-paren-mode)
+(setq xref-prompt-for-identifier t)
 (add-hook 'prog-mode-hook 'eldoc-mode)
 (setq-default indent-tabs-mode nil)
 ;; (add-hook 'prog-mode-hook 'fci-mode)
@@ -407,7 +408,7 @@ word boundaries) in text-mode-hook."
 
 (eval-after-load 'magit
   '(progn
-     (setq magit-status-buffer-switch-function 'switch-to-buffer)
+     (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
      (setq magit-push-always-verify nil)
      (setq git-commit-fill-column 72)
      (add-hook 'magit-log-edit-mode-hook (lambda () (set-fill-column 72)))
@@ -635,7 +636,7 @@ word boundaries) in text-mode-hook."
   (excluding stb-tester-service)"
   :command ("env" "PYTHONPATH=.:./stbt-service:./stbt-control-relay/stbt-control-relay"
             "sh" "-c"
-            "pep8 --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E731,W291,W503 $1 && stbt lint --output-format=text $1"
+            "pep8 --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E722,E731,W291,W503 $1 && stbt lint --output-format=text $1"
             "--" source-inplace)
   :working-directory (lambda (checker)
                        (locate-dominating-file (buffer-file-name) ".stbt.conf"))
