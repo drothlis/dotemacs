@@ -634,12 +634,12 @@ word boundaries) in text-mode-hook."
 (flycheck-define-checker stb-tester-one-checker
   "Run custom pylint & pep8 checks for stb-tester-one repository
   (excluding stb-tester-service)"
-  :command ("env" "PYTHONPATH=.:./stbt-service:./stbt-control-relay/stbt-control-relay"
+  :command ("env" "PYTHONPATH=./pythonpath"
             "sh" "-c"
             "pep8 --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E722,E731,W291,W503 $1 && stbt lint --output-format=text $1"
             "--" source-inplace)
   :working-directory (lambda (checker)
-                       (locate-dominating-file (buffer-file-name) ".stbt.conf"))
+                       (locate-dominating-file (buffer-file-name) ".git"))
   :error-patterns ((error line-start (file-name) ":" line
                           (zero-or-one ":" column) ": "
                           (message) line-end))
