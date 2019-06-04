@@ -1,8 +1,14 @@
 .ido.last
+.ido.last~
 auto-save-list
 bookmarks
 elpa
 saved-history
+saved-places
+session.*
+.#session.*
+\#session.*
 semanticdb
 tramp
 url/cookies
+var/pcache/cache
