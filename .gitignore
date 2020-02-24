@@ -10,5 +10,6 @@ session.*
 \#session.*
 semanticdb
 tramp
+transient/
 url/cookies
 var/pcache/cache

@@ -11,7 +11,7 @@
 
 (require 'package)
 (nconc package-archives
-       '(("marmalade" . "http://marmalade-repo.org/packages/")
+       '(;; ("marmalade" . "http://marmalade-repo.org/packages/")
          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 (when (not package-archive-contents)
@@ -23,9 +23,8 @@
     dired-details+
     dockerfile-mode
     expand-region
-    flycheck
-    flymd
     fill-column-indicator
+    flycheck
     goto-last-change
     haml-mode
     highlight-symbol
@@ -36,6 +35,7 @@
     lua-mode
     magit
     markdown-mode
+    markdown-preview-mode
     outline-magic
     page-break-lines
     paredit
@@ -237,6 +237,11 @@ word boundaries) in text-mode-hook."
 (eval-after-load 'ido
   ;; Face for "virtual" (recently-closed) buffers. TODO: Improve ido-virtual docstring.
   '(set-face-attribute 'ido-virtual nil :foreground "#7f7f7f"))
+
+(eval-after-load 'web-mode
+  '(progn
+     (set-face-attribute 'web-mode-html-attr-value-face nil :foreground "#33334f")
+     (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "Snow4")))
 
 (global-hl-line-mode)
 
@@ -440,6 +445,7 @@ word boundaries) in text-mode-hook."
  ;;   "';'.join(module_completion('''%s'''))\n"
  ;; python-shell-completion-string-code
  ;;   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+ python-fill-docstring-style 'pep-257-nn
  )
 (add-hook 'python-mode-hook
           (lambda () (setq imenu-create-index-function
@@ -622,7 +628,8 @@ word boundaries) in text-mode-hook."
 (require 'flycheck)
 (flycheck-define-checker stb-tester-checker
   "Run custom pylint & pep8 checks for stb-tester repository"
-  :command ("env" "PYTHONPATH=." "extra/pylint.sh" source-inplace)
+  :command ("env" "PYTHONPATH=." "PYLINT=pylint3"
+            "extra/pylint.sh" source-inplace)
   :working-directory (lambda (checker)
                        (locate-dominating-file (buffer-file-name) ".git"))
   :error-patterns ((error line-start (file-name) ":" line
@@ -632,11 +639,10 @@ word boundaries) in text-mode-hook."
   :modes python-mode
   :predicate (lambda () (string-match "/stb-tester/" buffer-file-truename)))
 (flycheck-define-checker stb-tester-one-checker
-  "Run custom pylint & pep8 checks for stb-tester-one repository
-  (excluding stb-tester-service)"
+  "Run custom pylint & pep8 checks for stb-tester-one repository"
   :command ("env" "PYTHONPATH=./pythonpath"
             "sh" "-c"
-            "pep8 --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E722,E731,W291,W503 $1 && stbt lint --output-format=text $1"
+            "pep8 --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E722,E731,W291,W503 $1 && pylint --output-format=text $1"
             "--" source-inplace)
   :working-directory (lambda (checker)
                        (locate-dominating-file (buffer-file-name) ".git"))
@@ -651,7 +657,10 @@ word boundaries) in text-mode-hook."
                     (not (string-match "/stb-tester/" buffer-file-truename)))))
 (flycheck-define-checker test-pack-checker
   "Run stbt lint for stb-tester-test-pack repositories"
-  :command ("~/.local/bin/stbt" "lint" "--output-format=parseable" source-inplace)
+  :command ("env" "PYTHONPATH=/home/drothlis/.local/lib/python3/site-packages"
+            "pylint3" "--load-plugins=stbt.pylint_plugin"
+            "--output-format=parseable"
+            source-inplace)
   :working-directory (lambda (checker)
                        (locate-dominating-file (buffer-file-name) ".pylintrc"))
   :error-patterns ((error line-start (file-name) ":" line
