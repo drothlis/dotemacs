@@ -41,6 +41,7 @@
     paredit
     rust-mode
     typescript-mode
+    wsd-mode  ; websequencediagrams.com
     yaml-mode
     ))
 (dolist (p my-packages)
@@ -52,6 +53,10 @@
 
 
 ;;; Keys
+
+;; This minimizes the window and sometimes continues frozen even after I
+;; alt-tab back to it.
+(global-unset-key (kbd "C-z"))
 
 (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 (global-set-key (kbd "C-x k") 'my-kill-buffer)
@@ -84,6 +89,7 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-switchb)
 (setq org-completion-use-ido t)
+(setq org-clock-idle-time 15)
 
 ;; Use regex searches by default
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -486,6 +492,7 @@ word boundaries) in text-mode-hook."
 (add-hook 'js2-mode-hook
           (lambda () (setq imenu-create-index-function 'js-imenu-make-index)))
 (setq js2-basic-offset 2)
+(setq js-switch-indent-offset 2)
 
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
@@ -657,8 +664,7 @@ word boundaries) in text-mode-hook."
                     (not (string-match "/stb-tester/" buffer-file-truename)))))
 (flycheck-define-checker test-pack-checker
   "Run stbt lint for stb-tester-test-pack repositories"
-  :command ("env" "PYTHONPATH=/home/drothlis/.local/lib/python3/site-packages"
-            "pylint3" "--load-plugins=stbt.pylint_plugin"
+  :command (".venv/bin/pylint" "--load-plugins=stbt.pylint_plugin"
             "--output-format=parseable"
             source-inplace)
   :working-directory (lambda (checker)
