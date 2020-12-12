@@ -4,15 +4,13 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-(require 'cl)
-
 
 ;;; Package manager
 
 (require 'package)
 (nconc package-archives
        '(;; ("marmalade" . "http://marmalade-repo.org/packages/")
-         ("melpa" . "https://melpa.org/packages/")))
+         ("melpa-stable" . "https://stable.melpa.org/packages/")))
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -32,11 +30,12 @@
     ido-ubiquitous
     imenu-anywhere
     jinja2-mode
+    lsp-mode
+    lsp-ui
     lua-mode
     magit
     markdown-mode
     markdown-preview-mode
-    outline-magic
     page-break-lines
     paredit
     rust-mode
@@ -50,6 +49,11 @@
 
 ;; Not available as a package
 (add-to-list 'load-path (concat user-emacs-directory "non-elpa"))
+
+(setenv "PATH" (concat
+                (getenv "HOME") "/local/bin:"
+                (getenv "HOME") "/.local/bin:"
+                (getenv "PATH")))
 
 
 ;;; Keys
@@ -109,11 +113,6 @@
 
 ;; TODO: goto-last-change-with-automarks (my "C-c u") isn't autoloaded.
 (require 'goto-last-change)
-
-(eval-after-load 'outline
-  '(progn
-     (require 'outline-magic)
-     (define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle)))
 
 (add-hook 'diff-mode-hook
   (lambda () (local-unset-key (kbd "M-q")))) ; don't override fill-paragraph.
@@ -336,6 +335,17 @@ word boundaries) in text-mode-hook."
 (setq-default indent-tabs-mode nil)
 ;; (add-hook 'prog-mode-hook 'fci-mode)
 
+;;; LSP (Language Server Protocol) for Rust etc.
+(require 'lsp-mode)
+(add-hook 'rust-mode-hook #'lsp)
+;;; Settings from https://emacs-lsp.github.io/lsp-mode/page/performance/
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024))
+(setq lsp-completion-provider :capf)
+(setq lsp-rust-server 'rust-analyzer)
+(setq lsp-enable-snippet nil)
+(setq lsp-modeline-code-actions-enable nil)
+
 (add-hook 'prog-mode-hook 'outline-minor-mode)
 
 (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
@@ -546,9 +556,9 @@ word boundaries) in text-mode-hook."
      (modify-frame-parameters nil `((left . ,l) (width . 81)
                                       (top . 0) (height . 100))))
    (cond
-    ((eq position ?h) 50)     ; qwerty J
-    ((eq position ?t) 890)   ; qwerty K
-    ((eq position ?n) 1720)  ; qwerty L
+    ((eq position ?h) 82)    ; qwerty J
+    ((eq position ?t) 908)   ; qwerty K
+    ((eq position ?n) 1735)  ; qwerty L
     (t (error "my-frame-move: Invalid position code")))))
 
 
@@ -597,10 +607,6 @@ word boundaries) in text-mode-hook."
 
 ;;; Misc
 
-(setenv "PATH" (concat
-                (getenv "HOME") "/local/bin:"
-                (getenv "HOME") "/.local/bin:"
-                (getenv "PATH")))
 (tooltip-mode -1)
 (setq visible-bell t)
 (setq inhibit-startup-screen t)

@@ -3,6 +3,7 @@
 auto-save-list
 bookmarks
 elpa
+.lsp-session*
 saved-history
 saved-places
 session.*
