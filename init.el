@@ -485,6 +485,7 @@ word boundaries) in text-mode-hook."
         (nil "[. \t]service([ \t]*['\"]\\([^'\"]+\\)" 1)
         (nil "[. \t]module([ \t]*['\"]\\([a-zA-Z0-9_\.]+\\)" 1)
         (nil "[. \t]directive([ \t]*['\"]\\([^'\"]+\\)" 1)
+        (nil "[. \t]component([ \t]*['\"]\\([^'\"]+\\)" 1)
         ("Event" "[. \t]\$on([ \t]*['\"]\\([^'\"]+\\)" 1)
         ("Config" "[. \t]config([ \t]*function *( *\\([^\)]+\\)" 1)
         ("Config" "[. \t]config([ \t]*\\[ *['\"]\\([^'\"]+\\)" 1)
@@ -655,7 +656,7 @@ word boundaries) in text-mode-hook."
   "Run custom pylint & pep8 checks for stb-tester-one repository"
   :command ("env" "PYTHONPATH=./pythonpath"
             "sh" "-c"
-            "pep8 --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E722,E731,W291,W503 $1 && pylint --output-format=text $1"
+            "pep8 --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E722,E731,W291,W503,W504 $1 && /home/drothlis/work/stb-tester.com/stb-tester-one/venvs/2.7/bin/pylint --output-format=text $1"
             "--" source-inplace)
   :working-directory (lambda (checker)
                        (locate-dominating-file (buffer-file-name) ".git"))

@@ -3,6 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(calendar-week-start-day 1)
  '(css-indent-offset 2)
  '(js-indent-level 2)
  '(lsp-rust-analyzer-server-command '("/home/drothlis/.local/bin/rust-analyzer"))
