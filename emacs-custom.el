@@ -5,15 +5,19 @@
  ;; If there is more than one, they won't work right.
  '(calendar-week-start-day 1)
  '(css-indent-offset 2)
+ '(imenu-auto-rescan t)
  '(js-indent-level 2)
- '(lsp-rust-analyzer-server-command '("/home/drothlis/.local/bin/rust-analyzer"))
- '(magit-diff-options '("--histogram"))
+ '(lsp-rust-analyzer-server-command (quote ("/home/drothlis/.local/bin/rust-analyzer")))
+ '(magit-diff-options (quote ("--histogram")))
  '(package-selected-packages
-   '(lsp-treemacs lsp-mode lsp-ui company ninja-mode gnu-elpa-keyring-update wsd-mode magit markdown-preview-mode magit-find-file yaml-mode web-mode typescript-mode rust-mode paredit page-break-lines markdown-mode lua-mode js2-mode jinja2-mode imenu-anywhere ido-ubiquitous htmlize highlight-symbol haml-mode goto-last-change go-eldoc gh flycheck fill-column-indicator expand-region dockerfile-mode dired-details+ diff-hl))
+   (quote
+    (lsp-treemacs lsp-mode lsp-ui company ninja-mode gnu-elpa-keyring-update wsd-mode magit markdown-preview-mode magit-find-file yaml-mode web-mode typescript-mode rust-mode paredit page-break-lines markdown-mode lua-mode js2-mode jinja2-mode imenu-anywhere ido-ubiquitous htmlize highlight-symbol haml-mode goto-last-change go-eldoc gh flycheck fill-column-indicator expand-region dockerfile-mode dired-details+ diff-hl)))
  '(safe-local-variable-values
-   '((eval if
-           (fboundp 'pretty-symbols-mode)
-           (pretty-symbols-mode -1)))))
+   (quote
+    ((eval if
+           (fboundp
+            (quote pretty-symbols-mode))
+           (pretty-symbols-mode -1))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

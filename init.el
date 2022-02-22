@@ -94,6 +94,7 @@
 (global-set-key (kbd "C-c b") 'org-switchb)
 (setq org-completion-use-ido t)
 (setq org-clock-idle-time 15)
+(setq org-clock-display-default-range 'untilnow)
 
 ;; Use regex searches by default
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -324,7 +325,7 @@ word boundaries) in text-mode-hook."
 (setq sort-fold-case t)
 
 (eval-after-load 'markdown-mode
-  '(setq markdown-command "pandoc -f markdown_github"))
+  '(setq markdown-command "pandoc -f gfm"))
 
 
 ;;; Programming
@@ -642,7 +643,7 @@ word boundaries) in text-mode-hook."
 (require 'flycheck)
 (flycheck-define-checker stb-tester-checker
   "Run custom pylint & pep8 checks for stb-tester repository"
-  :command ("env" "PYTHONPATH=." "PYLINT=pylint3"
+  :command ("env" "PYTHONPATH=." "PYLINT=pylint"
             "extra/pylint.sh" source-inplace)
   :working-directory (lambda (checker)
                        (locate-dominating-file (buffer-file-name) ".git"))
@@ -654,9 +655,9 @@ word boundaries) in text-mode-hook."
   :predicate (lambda () (string-match "/stb-tester/" buffer-file-truename)))
 (flycheck-define-checker stb-tester-one-checker
   "Run custom pylint & pep8 checks for stb-tester-one repository"
-  :command ("env" "PYTHONPATH=./pythonpath"
+  :command ("pipenv" "run" "env" "PYTHONPATH=./pythonpath"
             "sh" "-c"
-            "pep8 --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E722,E731,W291,W503,W504 $1 && /home/drothlis/work/stb-tester.com/stb-tester-one/venvs/2.7/bin/pylint --output-format=text $1"
+            "pycodestyle --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E722,E731,W291,W503,W504 $1 && pylint --output-format=text $1"
             "--" source-inplace)
   :working-directory (lambda (checker)
                        (locate-dominating-file (buffer-file-name) ".git"))
