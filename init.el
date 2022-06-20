@@ -451,23 +451,23 @@ word boundaries) in text-mode-hook."
      (setq ruby-insert-encoding-magic-comment nil))) ; ANNOYING!
 
 ;; Copied from instructions at the top of python.el
-(setq
- python-shell-interpreter "ipython"
- python-shell-interpreter-args "-i"
- ;; python-shell-prompt-regexp "In \\[[0-9]+\\]: "
- ;; python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
- ;; python-shell-completion-setup-code
- ;;   "from IPython.core.completerlib import module_completion"
- ;; python-shell-completion-module-string-code
- ;;   "';'.join(module_completion('''%s'''))\n"
- ;; python-shell-completion-string-code
- ;;   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
- python-fill-docstring-style 'pep-257-nn
- )
+;; (setq
+;;  python-shell-interpreter "ipython"
+;;  python-shell-interpreter-args "-i"
+;;  ;; python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+;;  ;; python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+;;  ;; python-shell-completion-setup-code
+;;  ;;   "from IPython.core.completerlib import module_completion"
+;;  ;; python-shell-completion-module-string-code
+;;  ;;   "';'.join(module_completion('''%s'''))\n"
+;;  ;; python-shell-completion-string-code
+;;  ;;   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+;;  python-fill-docstring-style 'pep-257-nn
+;;  )
 (add-hook 'python-mode-hook
           (lambda () (setq imenu-create-index-function
                       #'python-imenu-create-flat-index)))
-(add-hook 'python-mode-hook (lambda () (eldoc-mode -1)))
+;; (add-hook 'python-mode-hook (lambda () (eldoc-mode -1)))
 
 (eval-after-load 'haskell-mode
   '(progn
@@ -628,15 +628,6 @@ word boundaries) in text-mode-hook."
 (eval-after-load 'bookmark
   (setq bookmark-default-file "~/.emacs.d/bookmarks"))
 
-(eval-after-load 'term
-  '(let ((usb-serial-ports
-          (remove-if-not 'file-exists-p
-                         '("/dev/ttyUSB0" "/dev/ttyUSB1" "/dev/ttyUSB2"
-                           "/dev/tty.USA19Hfa13P1.1"))))
-     (when usb-serial-ports
-       (setq serial-name-history usb-serial-ports)
-       (setq serial-speed-history (cons "115200" serial-speed-history)))))
-
 
 ;;; Stb-tester
 
@@ -653,6 +644,27 @@ word boundaries) in text-mode-hook."
   :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
   :modes python-mode
   :predicate (lambda () (string-match "/stb-tester/" buffer-file-truename)))
+(flycheck-define-checker stb-tester-one-python3-checker
+  "Run custom pylint & pep8 checks for stb-tester-one repository"
+  :command ("env" "PYTHONPATH=./pythonpath"
+            "sh" "-c"
+            "pycodestyle --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E203,E272,E241,E402,E501,E722,E731,W291,W503,W504 $1 && pylint --output-format=text $1"
+            "--" source-inplace)
+  :working-directory (lambda (checker)
+                       (locate-dominating-file (buffer-file-name) ".git"))
+  :error-patterns ((error line-start (file-name) ":" line
+                          (zero-or-one ":" column) ": "
+                          (message) line-end))
+  :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
+  :modes python-mode
+  :predicate (lambda ()
+               (and (or (string-match "/stbt_nursery/" buffer-file-truename)
+                        (string-match "/test_pack_client/" buffer-file-truename)
+                        (string-match "/test-pack-base-33/" buffer-file-truename)
+                        (string-match "/test-packs/v33/" buffer-file-truename)
+                        (string-match "/configure" buffer-file-truename))
+                    (not (string-match "/stb-tester/" buffer-file-truename))
+                    (not (string-match "test-packs/" buffer-file-truename)))))
 (flycheck-define-checker stb-tester-one-checker
   "Run custom pylint & pep8 checks for stb-tester-one repository"
   :command ("pipenv" "run" "env" "PYTHONPATH=./pythonpath"
@@ -669,7 +681,12 @@ word boundaries) in text-mode-hook."
   :predicate (lambda ()
                (and (string-match "stb-tester-one\\|stb-tester-node"
                                   buffer-file-truename)
-                    (not (string-match "/stb-tester/" buffer-file-truename)))))
+                    (not (string-match "/stb-tester/" buffer-file-truename))
+                    (not (string-match "/stbt_nursery/" buffer-file-truename))
+                    (not (string-match "/test_pack_client/" buffer-file-truename))
+                    (not (string-match "/test-pack-base-33/" buffer-file-truename))
+                    (not (string-match "/test-packs/v33/" buffer-file-truename))
+                    (not (string-match "/configure" buffer-file-truename)))))
 (flycheck-define-checker test-pack-checker
   "Run stbt lint for stb-tester-test-pack repositories"
   :command (".venv/bin/pylint" "--load-plugins=stbt.pylint_plugin"
@@ -686,6 +703,7 @@ word boundaries) in text-mode-hook."
                (or (string-match "test-packs/" buffer-file-truename)
                    (string-match "/stb-tester-test-pack/" buffer-file-truename))))
 (add-to-list 'flycheck-checkers 'stb-tester-checker)
+(add-to-list 'flycheck-checkers 'stb-tester-one-python3-checker)
 (add-to-list 'flycheck-checkers 'stb-tester-one-checker)
 (add-to-list 'flycheck-checkers 'test-pack-checker)
 (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
