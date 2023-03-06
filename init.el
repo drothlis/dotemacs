@@ -510,6 +510,15 @@ word boundaries) in text-mode-hook."
 (setenv "PAGER" "/bin/cat")
 
 
+;;; Info
+(require 'info-look)
+(info-lookup-add-help
+ :mode 'python-mode
+ :regexp "[[:alnum:]_]+"
+ :doc-spec
+ '(("(python3.10)" nil "")))
+
+
 ;;; GUI, frames & windows
 
 (when (display-graphic-p)
