@@ -36,7 +36,6 @@
     magit
     markdown-mode
     markdown-preview-mode
-    page-break-lines
     paredit
     rust-mode
     typescript-mode
@@ -86,14 +85,13 @@
 (global-set-key (kbd "C-c .") 'imenu)
 (global-set-key (kbd "C-c ,") 'imenu-anywhere)
 (global-set-key (kbd "C-c \\") 'align-regexp)
-(global-set-key (kbd "C-c SPC") 'my-frame-move)
 
 ;; Suggested by "The compact org-mode guide"
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-switchb)
 (setq org-completion-use-ido t)
-(setq org-clock-idle-time 15)
+(setq org-clock-idle-time 30)
 (setq org-clock-display-default-range 'untilnow)
 
 ;; Use regex searches by default
@@ -102,7 +100,7 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
-(windmove-default-keybindings) ; S-<up> for windmove-up, etc.
+(windmove-default-keybindings 'meta) ; M-<up> for windmove-up, etc.
 
 ;; TODO: Get these in dired by default.
 (autoload 'dired-jump "dired-x"
@@ -274,9 +272,6 @@ word boundaries) in text-mode-hook."
 (setq ffap-machine-p-local 'reject)
 (setq ffap-machine-p-unknown 'reject)
 
-(global-page-break-lines-mode)
-(add-to-list 'page-break-lines-modes 'prog-mode)
-
 ;; Allows C-u C-SPC C-SPC instead of C-u C-SPC C-u C-SPC
 (setq set-mark-command-repeat-pop t)
 
@@ -356,9 +351,10 @@ word boundaries) in text-mode-hook."
 (setq-default mode-line-format
   '("%e" mode-line-front-space mode-line-mule-info
     mode-line-client mode-line-modified mode-line-remote
-    mode-line-frame-identification mode-line-buffer-identification "  "
+    mode-line-frame-identification mode-line-buffer-identification " "
     mode-line-position
     mode-line-misc-info
+    flycheck-mode-line
     (vc-mode vc-mode) "  "
     mode-line-modes mode-line-end-spaces))
 
@@ -549,6 +545,7 @@ word boundaries) in text-mode-hook."
     ((eq position ?t) 908)   ; qwerty K
     ((eq position ?n) 1735)  ; qwerty L
     (t (error "my-frame-move: Invalid position code")))))
+(global-set-key (kbd "C-c SPC") 'my-frame-move)
 
 
 ;;; Email
@@ -635,7 +632,7 @@ word boundaries) in text-mode-hook."
   "Run custom pylint & pep8 checks for stb-tester-one repository"
   :command ("env" "PYTHONPATH=./pythonpath"
             "sh" "-c"
-            "pycodestyle --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E203,E272,E241,E402,E501,E722,E731,W291,W503,W504 $1 && pylint --output-format=text $1"
+            "pylint --output-format=text $1"
             "--" source-inplace)
   :working-directory (lambda (checker)
                        (locate-dominating-file (buffer-file-name) ".git"))
@@ -645,7 +642,8 @@ word boundaries) in text-mode-hook."
   :error-filter (lambda (errors) (flycheck-increment-error-columns errors))
   :modes python-mode
   :predicate (lambda ()
-               (and (or (string-match "/stbt_nursery/" buffer-file-truename)
+               (and (or (string-match "/central-server/" buffer-file-truename)
+                        (string-match "/stbt_nursery/" buffer-file-truename)
                         (string-match "/test_pack_client/" buffer-file-truename)
                         (string-match "/test-pack-base-33/" buffer-file-truename)
                         (string-match "/test-packs/v33/" buffer-file-truename)
@@ -654,9 +652,9 @@ word boundaries) in text-mode-hook."
                     (not (string-match "test-packs/" buffer-file-truename)))))
 (flycheck-define-checker stb-tester-one-checker
   "Run custom pylint & pep8 checks for stb-tester-one repository"
-  :command ("pipenv" "run" "env" "PYTHONPATH=./pythonpath"
+  :command ("~/.local/bin/pipenv" "run" "env" "PYTHONPATH=./pythonpath"
             "sh" "-c"
-            "pycodestyle --ignore=E121,E123,E124,E126,E127,E128,E131,E201,E272,E241,E402,E501,E722,E731,W291,W503,W504 $1 && pylint --output-format=text $1"
+            "pylint --output-format=text $1"
             "--" source-inplace)
   :working-directory (lambda (checker)
                        (locate-dominating-file (buffer-file-name) ".git"))
@@ -669,6 +667,7 @@ word boundaries) in text-mode-hook."
                (and (string-match "stb-tester-one\\|stb-tester-node"
                                   buffer-file-truename)
                     (not (string-match "/stb-tester/" buffer-file-truename))
+                    (not (string-match "/central-server/" buffer-file-truename))
                     (not (string-match "/stbt_nursery/" buffer-file-truename))
                     (not (string-match "/test_pack_client/" buffer-file-truename))
                     (not (string-match "/test-pack-base-33/" buffer-file-truename))
