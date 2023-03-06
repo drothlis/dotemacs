@@ -514,19 +514,6 @@ word boundaries) in text-mode-hook."
 (setenv "PAGER" "/bin/cat")
 
 
-;;; Info
-
-;; Note: Generate info "directory" file with:
-;;   cd /opt/local/share/info
-;;   for f in *.info; do install-info $f; done
-(eval-after-load 'info
-  '(progn
-     (setq Info-additional-directory-list
-           '("~/work/info" "/opt/local/share/info"))))
-
-(require 'pydoc-info)
-
-
 ;;; GUI, frames & windows
 
 (when (display-graphic-p)
